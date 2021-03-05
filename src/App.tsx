@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import axios from 'axios';
-import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, Typography } from '@material-ui/core';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Button, Card, CardActionArea, CardActions, CardContent, Grid, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 interface Asset {
   permalink: string;
@@ -27,7 +27,6 @@ function MarketCard(props: { address: string }) {
 
   const [data, setData] = useState<Asset[] | []>([]);
   const classes = useStyles();
-  const theme = useTheme();
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(
@@ -48,7 +47,7 @@ function MarketCard(props: { address: string }) {
     };
 
     fetchData();
-  }, []);
+  }, [props.address]);
 
   return (
     <Card className={classes.marketCard}>
@@ -90,7 +89,6 @@ const useStyles = makeStyles((theme) => ({
 function App() {
 
   const classes = useStyles();
-  const theme = useTheme();
   const JAN_BOX_ADDRESS = "0x5F8061F9d6A2Bb4688F46491cCA7658e214E2Cb6";
   const FEB_BOX_ADDRESS = "0x067ab2FbdBED63401aF802d1DD786E6D83b0ff1B";
 
