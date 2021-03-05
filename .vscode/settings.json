@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/6affbfd7-bf67-4c63-8e13-d645b08ba44b/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/pranksy-market-app",
+    "appService.deploySubpath": "."
+}
