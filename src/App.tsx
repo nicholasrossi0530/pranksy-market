@@ -52,7 +52,7 @@ function MarketCard(props: { address: string }) {
   return (
     <Card className={classes.marketCard}>
       <CardActionArea>
-        <img style={{ height: 450 }} src={data.length > 0 ? data[0].image_url : ''} />
+        <img alt="NFT Box" style={{ height: 450 }} src={data.length > 0 ? data[0].image_url : ''} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {data.length > 0 ? data[0].name.replace(/([#])\d+/g, '') : ''}
