@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import axios from 'axios';
-import { Button, Card, CardActionArea, CardActions, CardContent, Grid, Typography } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import MarketCard from './MarketCard';
+import ComingSoonCard from './ComingSoonCard';
+import ArtCards from './ArtCards';
 
 interface Asset {
   permalink: string;
@@ -23,66 +25,13 @@ interface PaymentToken {
   decimals: number;
 }
 
-function MarketCard(props: { address: string }) {
-
-  const [data, setData] = useState<Asset[] | []>([]);
-  const classes = useStyles();
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(
-        'https://api.opensea.io/api/v1/assets', {
-        params: {
-          asset_contract_address: props.address,
-          order_by: 'sale_date',
-          limit: 1
-        }
-      }
-      );
-      console.log(result.data);
-      if (result.status === 200) {
-        setData(result.data.assets);
-      } else {
-        console.log(`ERROR: WTF ${result}`)
-      }
-    };
-
-    fetchData();
-  }, [props.address]);
-
-  return (
-    <Card className={classes.marketCard}>
-      <CardActionArea>
-        <img alt="NFT Box" style={{ height: 450 }} src={data.length > 0 ? data[0].image_url : ''} />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {data.length > 0 ? data[0].name.replace(/([#])\d+/g, '') : ''}
-          </Typography>
-          <Typography gutterBottom variant="body2" color="textSecondary" component="p">
-            Last sale: {data.length > 0
-              ? `${parseInt(data[0].last_sale.total_price) / Math.pow(10, data[0].last_sale.payment_token.decimals)} ${data[0].last_sale.payment_token.symbol}`
-              : ''
-            }
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {data.length > 0 ? data[0].description : ''}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button href={data.length > 0 ? data[0].permalink : ''} target="_blank" size="small">Check Out</Button>
-      </CardActions>
-    </Card>
-  );
-}
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     justifyContent: 'space-evenly',
-    marginTop: '50px'
-  },
-  marketCard: {
-    maxWidth: '450px'
+    marginTop: '50px',
+    flexWrap: 'wrap',
+    padding: '0px 150px'
   }
 }));
 
@@ -91,15 +40,20 @@ function App() {
   const classes = useStyles();
   const JAN_BOX_ADDRESS = "0x5F8061F9d6A2Bb4688F46491cCA7658e214E2Cb6";
   const FEB_BOX_ADDRESS = "0x067ab2FbdBED63401aF802d1DD786E6D83b0ff1B";
+  const ART_ADDRESS = "0x6d4530149e5B4483d2F7E60449C02570531A0751";
 
   return (
     <Grid container spacing={1}>
-      <Grid container item xs={12} spacing={3} className={classes.root}>
+      <Grid container item xs={12} spacing={4} className={classes.root}>
         <MarketCard
           address={JAN_BOX_ADDRESS}
         />
         <MarketCard
           address={FEB_BOX_ADDRESS}
+        />
+        <ComingSoonCard />
+        <ArtCards 
+          address={ART_ADDRESS}
         />
       </Grid>
     </Grid>
