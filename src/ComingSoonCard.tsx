@@ -1,36 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./App.css";
-import axios from "axios";
 import {
-  Button,
   Card,
-  CardActionArea,
-  CardActions,
   CardContent,
   Container,
-  Grid,
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
-interface Asset {
-  permalink: string;
-  name: string;
-  description: string;
-  image_url: string;
-  last_sale: LastSale;
-}
-
-interface LastSale {
-  payment_token: PaymentToken;
-  total_price: string;
-}
-
-interface PaymentToken {
-  symbol: string;
-  eth_price: string;
-  decimals: number;
-}
 
 function ComingSoonCard() {
   const classes = useStyles();

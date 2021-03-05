@@ -1,29 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './App.css';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import MarketCard from './MarketCard';
 import ComingSoonCard from './ComingSoonCard';
 import ArtCards from './ArtCards';
-
-interface Asset {
-  permalink: string;
-  name: string;
-  description: string;
-  image_url: string;
-  last_sale: LastSale;
-}
-
-interface LastSale {
-  payment_token: PaymentToken;
-  total_price: string;
-}
-
-interface PaymentToken {
-  symbol: string;
-  eth_price: string;
-  decimals: number;
-}
 
 const useStyles = makeStyles((theme) => ({
   root: {
