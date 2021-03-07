@@ -10,7 +10,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { gql, useQuery } from "@apollo/client";
+import { ApolloError, gql, useQuery } from "@apollo/client";
+import { ITransaction } from "./interfaces/Interfaces";
 
 const getXDaysAgo = () => {
     const today = new Date();
@@ -30,29 +31,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const EXCHANGE_RATES = gql`
-  {
-    transactions(
-      orderBy: "timestamp"
-      orderDirection: "asc"
-      where: { value_gt: 0, timestamp_gt: ${getXDaysAgo()} }
-    ) {
-      id
-      hash
-      index
-      from
-      to
-      value
-      gasUsed
-      gasPrice
-      timestamp
-      tokenId
-    }
-  }
-`;
-
-function PriceHistory() {
-    const { loading, error, data } = useQuery(EXCHANGE_RATES);
+function PriceHistory(props: { loading: boolean, error: ApolloError | undefined, transactions: ITransaction[] | undefined }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -64,8 +43,8 @@ function PriceHistory() {
     setOpen(false);
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :( {JSON.stringify(error)}</p>;
+  if (props.loading) return <p>Loading...</p>;
+  if (props.error) return <p>Error :( {JSON.stringify(props.error)}</p>;
 
   return (
     <>
@@ -82,7 +61,7 @@ function PriceHistory() {
         <AreaChart
           width={1000}
           height={1000}
-          data={data.transactions}
+          data={props.transactions}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
           className={classes.areaChart}
         >

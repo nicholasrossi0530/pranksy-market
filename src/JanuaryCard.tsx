@@ -10,6 +10,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import PriceHistory from "./PriceHistory";
+import { ApolloClient, gql, InMemoryCache, useQuery } from "@apollo/client";
 
 interface Asset {
   permalink: string;
@@ -38,12 +39,57 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-  }
+  },
 }));
 
-function MarketCard(props: { address: string }) {
+const getXDaysAgo = () => {
+  const today = new Date();
+  today.setDate(today.getDate() - 5);
+  return Date.parse(today.toString()) / 1000;
+};
+
+const EXCHANGE_RATES = gql`
+  {
+    transactions(
+      orderBy: "timestamp"
+      orderDirection: "asc"
+      where: { value_gt: 0, timestamp_gt: ${getXDaysAgo()} }
+    ) {
+      id
+      hash
+      index
+      from
+      to
+      value
+      gasUsed
+      gasPrice
+      timestamp
+      tokenId
+    }
+  }
+`;
+
+const client = new ApolloClient({
+  uri:
+    "https://api.thegraph.com/subgraphs/name/nicholasrossi0530/nft-box-graph",
+  cache: new InMemoryCache(),
+});
+
+function JanuaryCard(props: { address: string }) {
   const [assetData, setAssetData] = useState<Asset[] | []>([]);
   const classes = useStyles();
+  const { loading, error, data } = useQuery(EXCHANGE_RATES, {
+    client,
+  });
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -96,17 +142,21 @@ function MarketCard(props: { address: string }) {
         </Typography>
       </CardContent>
       <CardActions>
-      <Button
-        href={assetData.length > 0 ? assetData[0].permalink : ""}
-        target="_blank"
-        size="small"
-      >
-        Check Out
-      </Button>
-      {/* <PriceHistory /> */}
-    </CardActions>
+        <Button
+          href={assetData.length > 0 ? assetData[0].permalink : ""}
+          target="_blank"
+          size="small"
+        >
+          Check Out
+        </Button>
+        <PriceHistory
+          transactions={data ? data.transactions : undefined}
+          loading={loading}
+          error={error}
+        />
+      </CardActions>
     </Card>
   );
 }
 
-export default MarketCard;
+export default JanuaryCard;

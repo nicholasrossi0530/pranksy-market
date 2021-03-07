@@ -43,7 +43,6 @@ function ArtCards(props: { address: string }) {
           limit: 50,
         },
       });
-      console.log(result.data);
       if (result.status === 200) {
         setData(result.data.assets);
       } else {
@@ -68,7 +67,7 @@ function ArtCards(props: { address: string }) {
             />
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
-                {item ? item.name.replace(/([#])\d+/g, "") : ""}
+                {item ? item.name : ""}
               </Typography>
               <Typography
                 gutterBottom
@@ -96,7 +95,7 @@ function ArtCards(props: { address: string }) {
               >
                 Check Out
               </Button>
-              <PriceHistory />
+              {/* <PriceHistory /> */}
             </CardActions>
           </Card>
         );

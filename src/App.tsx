@@ -5,6 +5,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import MarketCard from "./MarketCard";
 import ComingSoonCard from "./ComingSoonCard";
 import ArtCards from "./ArtCards";
+import JanuaryCard from "./JanuaryCard";
+import FebruaryCard from "./FebruaryCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,7 +27,13 @@ function App() {
   return (
     <Grid container spacing={1}>
       <Grid container item xs={12} spacing={4} className={classes.root}>
-        <MarketCard
+        <JanuaryCard
+          address={JAN_BOX_ADDRESS}
+        />
+        <FebruaryCard
+          address={FEB_BOX_ADDRESS}
+        />
+        {/* <MarketCard
           address={JAN_BOX_ADDRESS}
         />
         <MarketCard
@@ -34,7 +42,7 @@ function App() {
         <ComingSoonCard />
         <ArtCards
           address={ART_ADDRESS}
-        />
+        /> */}
       </Grid>
     </Grid>
   );
