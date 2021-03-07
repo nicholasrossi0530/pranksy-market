@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
-import { Button, Modal } from "@material-ui/core";
+import { Modal } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Area,
@@ -10,8 +10,13 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { ApolloError } from "@apollo/client";
-import { IFormattedTransaction } from "./interfaces/Interfaces";
+import {
+  ApolloClient,
+  DocumentNode,
+  NormalizedCacheObject,
+  useQuery,
+} from "@apollo/client";
+import { IFormattedTransaction, ITransaction } from "./interfaces/Interfaces";
 
 const useStyles = makeStyles((theme) => ({
   modalBox: {
@@ -25,29 +30,47 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function PriceHistory(props: { loading: boolean, error: ApolloError | undefined, transactions: IFormattedTransaction[] | undefined }) {
+const formatData = (transacations: ITransaction[]) => {
+  return transacations.map((transaction: ITransaction) => {
+    const date = new Date(parseInt(transaction.timestamp) * 1000);
+    const value = parseInt(transaction.value) / Math.pow(10, 18);
+    return {
+      ...transaction,
+      formattedTimestamp: date.toLocaleDateString(),
+      formattedValue: value.toString(),
+      day: parseInt(
+        `${date.getFullYear()}${date.getMonth() + 1}${date.getDate()}`
+      ),
+    };
+  });
+};
+
+function PriceHistory(props: {
+  query: DocumentNode;
+  client: ApolloClient<NormalizedCacheObject>;
+  open: boolean;
+  handleClose: ((event: {}, reason: "backdropClick" | "escapeKeyDown") => void) | undefined;
+}) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const { loading, error, data } = useQuery(props.query, {
+    client: props.client
+  });
+  const [formattedData, setFormattedData] = useState<IFormattedTransaction[]>();
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  useEffect(() => {
+    if (data !== undefined && data !== null) {
+      setFormattedData(formatData(data.transactions));
+    }
+  }, [data]);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  if (props.loading) return <p>Loading...</p>;
-  if (props.error) return <p>Error :( {JSON.stringify(props.error)}</p>;
+  if (loading) return null;
+  if (error) return <p>Error :( {JSON.stringify(error)}</p>;
 
   return (
     <>
-      <Button onClick={handleOpen} size="small">
-        Price History
-      </Button>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={props.open}
+        onClose={props.handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
         className={classes.modalBox}
@@ -55,7 +78,7 @@ function PriceHistory(props: { loading: boolean, error: ApolloError | undefined,
         <AreaChart
           width={750}
           height={750}
-          data={props.transactions}
+          data={formattedData}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
           className={classes.areaChart}
         >
@@ -72,28 +95,12 @@ function PriceHistory(props: { loading: boolean, error: ApolloError | undefined,
           <XAxis
             dataKey="day"
             tickSize={1}
-            ticks={[
-              202131,
-              202132,
-              202133,
-              202134,
-              202135,
-              202136
-            ]}
+            ticks={[202131, 202132, 202133, 202134, 202135, 202136]}
           />
           <YAxis
             dataKey="formattedValue"
             tickSize={1}
-            ticks={[
-              0.5,
-              1.0,
-              1.5,
-              2,
-              2.5,
-              3,
-              3.5,
-              4,
-            ]}
+            ticks={[0.5, 1.0, 1.5, 2, 2.5, 3, 3.5, 4]}
           />
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip />

@@ -10,27 +10,8 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import PriceHistory from "./PriceHistory";
-import { ApolloError } from "@apollo/client";
-import { IFormattedTransaction } from "./interfaces/Interfaces";
-
-interface Asset {
-  permalink: string;
-  name: string;
-  description: string;
-  image_url: string;
-  last_sale: LastSale;
-}
-
-interface LastSale {
-  payment_token: PaymentToken;
-  total_price: string;
-}
-
-interface PaymentToken {
-  symbol: string;
-  eth_price: string;
-  decimals: number;
-}
+import { ApolloClient, DocumentNode, NormalizedCacheObject } from "@apollo/client";
+import { IAsset } from "./interfaces/Interfaces";
 
 const useStyles = makeStyles(() => ({
   marketCard: {
@@ -43,9 +24,10 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-function MarketCard(props: { address: string, loading: boolean, error: ApolloError | undefined, transactions: IFormattedTransaction[] | undefined }) {
-  const [assetData, setAssetData] = useState<Asset[] | []>([]);
+function MarketCard(props: { address: string, query: DocumentNode, client: ApolloClient<NormalizedCacheObject> }) {
+  const [assetData, setAssetData] = useState<IAsset[] | []>([]);
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,6 +47,14 @@ function MarketCard(props: { address: string, loading: boolean, error: ApolloErr
 
     fetchData();
   }, [props.address]);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Card className={classes.marketCard}>
@@ -104,11 +94,17 @@ function MarketCard(props: { address: string, loading: boolean, error: ApolloErr
         >
           Check Out
       </Button>
-        <PriceHistory
-          transactions={props.transactions}
-          loading={props.loading}
-          error={props.error}
-        />
+        <Button onClick={handleOpen} size="small">
+          Price History
+        </Button>
+        {open && 
+          <PriceHistory
+            query={props.query}
+            client={props.client}
+            handleClose={handleClose}
+            open={open}
+          />
+        }
       </CardActions>
     </Card>
   );
