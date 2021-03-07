@@ -11,6 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import PriceHistory from "./PriceHistory";
 import { ApolloClient, gql, InMemoryCache, useQuery } from "@apollo/client";
+import { ITransaction, IFormattedTransaction } from "./interfaces/Interfaces";
 
 interface Asset {
   permalink: string;
@@ -75,12 +76,32 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const formatData = (transacations: ITransaction[]) => {
+  return transacations.map((transaction: ITransaction) => {
+    const date = new Date(parseInt(transaction.timestamp) * 1000);
+    const value = parseInt(transaction.value) / Math.pow(10, 18);
+    return {
+      ...transaction,
+      formattedTimestamp: date.toString(),
+      formattedValue: value.toString()
+    };
+  });
+};
+
 function FebruaryCard(props: { address: string }) {
   const [assetData, setAssetData] = useState<Asset[] | []>([]);
   const classes = useStyles();
   const { loading, error, data } = useQuery(EXCHANGE_RATES, {
     client,
   });
+
+  const [formattedData, setFormattedData] = useState<IFormattedTransaction[]>();
+
+  useEffect(() => {
+    if (data !== undefined && data !== null) {
+      setFormattedData(formatData(data.transactions));
+    }
+  }, [data]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -141,7 +162,7 @@ function FebruaryCard(props: { address: string }) {
           Check Out
         </Button>
         <PriceHistory
-          transactions={data ? data.transactions : undefined}
+          transactions={data ? formattedData : undefined}
           loading={loading}
           error={error}
         />

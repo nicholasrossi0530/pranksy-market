@@ -11,7 +11,7 @@ import {
   YAxis,
 } from "recharts";
 import { ApolloError, gql, useQuery } from "@apollo/client";
-import { ITransaction } from "./interfaces/Interfaces";
+import { IFormattedTransaction } from "./interfaces/Interfaces";
 
 const getXDaysAgo = () => {
     const today = new Date();
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function PriceHistory(props: { loading: boolean, error: ApolloError | undefined, transactions: ITransaction[] | undefined }) {
+function PriceHistory(props: { loading: boolean, error: ApolloError | undefined, transactions: IFormattedTransaction[] | undefined }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -75,26 +75,26 @@ function PriceHistory(props: { loading: boolean, error: ApolloError | undefined,
               <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis dataKey="timestamp" />
+          <XAxis dataKey="formattedTimestamp" />
           <YAxis
-            dataKey="value"
+            dataKey="formattedValue"
             tickSize={1}
             ticks={[
-              500000000000000000,
-              1000000000000000000,
-              1500000000000000000,
-              2000000000000000000,
-              2500000000000000000,
-              3000000000000000000,
-              3500000000000000000,
-              4000000000000000000,
+              0.5,
+              1.0,
+              1.5,
+              2,
+              2.5,
+              3,
+              3.5,
+              4,
             ]}
           />
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip />
           <Area
             type="monotone"
-            dataKey="value"
+            dataKey="formattedValue"
             stroke="#8884d8"
             fillOpacity={1}
             fill="url(#colorUv)"

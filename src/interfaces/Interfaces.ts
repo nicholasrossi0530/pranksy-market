@@ -10,3 +10,8 @@ export interface ITransaction {
   tokenId: string;
   value: string;
 }
+
+export interface IFormattedTransaction extends ITransaction {
+  formattedTimestamp: string;
+  formattedValue: string;
+}
