@@ -59,8 +59,8 @@ function PriceHistory(props: { loading: boolean, error: ApolloError | undefined,
         className={classes.modalBox}
       >
         <AreaChart
-          width={1000}
-          height={1000}
+          width={750}
+          height={750}
           data={props.transactions}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
           className={classes.areaChart}
@@ -75,7 +75,18 @@ function PriceHistory(props: { loading: boolean, error: ApolloError | undefined,
               <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis dataKey="formattedTimestamp" />
+          <XAxis
+            dataKey="day"
+            tickSize={1}
+            ticks={[
+              202131,
+              202132,
+              202133,
+              202134,
+              202135,
+              202136
+            ]}
+          />
           <YAxis
             dataKey="formattedValue"
             tickSize={1}

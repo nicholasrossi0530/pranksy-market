@@ -14,34 +14,32 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import PriceHistory from "./PriceHistory";
+import { IAsset } from "./interfaces/Interfaces";
 
-interface Asset {
-  id: number;
-  permalink: string;
-  name: string;
-  description: string;
-  image_url: string;
-  last_sale: LastSale;
-  creator: CreatorInfo;
-}
-
-interface CreatorInfo {
-  profile_img_url: string;
-}
-
-interface LastSale {
-  payment_token: PaymentToken;
-  total_price: string;
-}
-
-interface PaymentToken {
-  symbol: string;
-  eth_price: string;
-  decimals: number;
-}
+const useStyles = makeStyles(() => ({
+  marketCard: {
+    maxWidth: '450px',
+    margin: '1em 0',
+    maxHeight: '950px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between'
+  },
+  buttonContainer: {},
+  image: {
+      height: '450px'
+  },
+  multiLineEllipsis: {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    display: "-webkit-box",
+    "-webkit-line-clamp": 4,
+    "-webkit-box-orient": "vertical"
+  }
+}));
 
 function ArtCards(props: { address: string }) {
-  const [data, setData] = useState<Asset[] | []>([]);
+  const [data, setData] = useState<IAsset[] | []>([]);
   const classes = useStyles();
   useEffect(() => {
     const fetchData = async () => {
@@ -64,7 +62,7 @@ function ArtCards(props: { address: string }) {
 
   return (
     <>
-      {data.map((item: Asset) => {
+      {data.map((item: IAsset) => {
         const descriptions = item.description.match(/[^\r\n]+/g)!;
         const artist = descriptions[1];
         const message = descriptions[4];
@@ -128,27 +126,5 @@ function ArtCards(props: { address: string }) {
     </>
   );
 }
-
-const useStyles = makeStyles(() => ({
-  marketCard: {
-    maxWidth: '450px',
-    margin: '1em 0',
-    maxHeight: '950px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between'
-  },
-  buttonContainer: {},
-  image: {
-      height: '450px'
-  },
-  multiLineEllipsis: {
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    display: "-webkit-box",
-    "-webkit-line-clamp": 4,
-    "-webkit-box-orient": "vertical"
-  }
-}));
 
 export default ArtCards;

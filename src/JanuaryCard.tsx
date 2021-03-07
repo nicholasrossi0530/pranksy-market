@@ -1,46 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Typography,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
-import PriceHistory from "./PriceHistory";
 import { ApolloClient, gql, InMemoryCache, useQuery } from "@apollo/client";
 import { IFormattedTransaction, ITransaction } from "./interfaces/Interfaces";
-interface Asset {
-  permalink: string;
-  name: string;
-  description: string;
-  image_url: string;
-  last_sale: LastSale;
-}
-
-interface LastSale {
-  payment_token: PaymentToken;
-  total_price: string;
-}
-
-interface PaymentToken {
-  symbol: string;
-  eth_price: string;
-  decimals: number;
-}
-
-const useStyles = makeStyles(() => ({
-  marketCard: {
-    maxWidth: "450px",
-    margin: "1em 0",
-    maxHeight: "950px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-}));
+import MarketCard from "./MarketCard";
 
 const getXDaysAgo = () => {
   const today = new Date();
@@ -81,101 +43,33 @@ const formatData = (transacations: ITransaction[]) => {
     const value = parseInt(transaction.value) / Math.pow(10, 18);
     return {
       ...transaction,
-      formattedTimestamp: date.toString(),
-      formattedValue: value.toString()
+      formattedTimestamp: date.toLocaleDateString(),
+      formattedValue: value.toString(),
+      day: parseInt(`${date.getFullYear()}${date.getMonth()+1}${date.getDate()}`)
     };
   });
 };
 
-function JanuaryCard(props: { address: string }) {
-  const [assetData, setAssetData] = useState<Asset[] | []>([]);
-  const classes = useStyles();
+function JanuaryCard() {
   const { loading, error, data } = useQuery(EXCHANGE_RATES, {
     client,
   });
   const [formattedData, setFormattedData] = useState<IFormattedTransaction[]>();
+  const JAN_BOX_ADDRESS = "0x5F8061F9d6A2Bb4688F46491cCA7658e214E2Cb6";
 
   useEffect(() => {
     if (data !== undefined && data !== null) {
       setFormattedData(formatData(data.transactions));
     }
   }, [data]);
-  
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios("https://api.opensea.io/api/v1/assets", {
-        params: {
-          asset_contract_address: props.address,
-          order_by: "sale_date",
-          limit: 1,
-        },
-      });
-      if (result.status === 200) {
-        setAssetData(result.data.assets);
-      } else {
-        console.log(`ERROR: WTF ${result}`);
-      }
-    };
-
-    fetchData();
-  }, [props.address]);
 
   return (
-    <Card className={classes.marketCard}>
-      <img
-        alt="NFT Box"
-        style={{ height: 450 }}
-        src={assetData.length > 0 ? assetData[0].image_url : ""}
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="h2">
-          {assetData.length > 0
-            ? assetData[0].name.replace(/([#])\d+/g, "")
-            : ""}
-        </Typography>
-        <Typography
-          gutterBottom
-          variant="body2"
-          color="textSecondary"
-          component="p"
-        >
-          Last sale:{" "}
-          {assetData.length > 0
-            ? `${
-                parseInt(assetData[0].last_sale.total_price) /
-                Math.pow(10, assetData[0].last_sale.payment_token.decimals)
-              } ${assetData[0].last_sale.payment_token.symbol}`
-            : ""}
-        </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {assetData.length > 0 ? assetData[0].description : ""}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button
-          href={assetData.length > 0 ? assetData[0].permalink : ""}
-          target="_blank"
-          size="small"
-        >
-          Check Out
-        </Button>
-        <PriceHistory
-          transactions={data ? formattedData : undefined}
-          loading={loading}
-          error={error}
-        />
-      </CardActions>
-    </Card>
+    <MarketCard
+      address={JAN_BOX_ADDRESS}
+      loading={loading}
+      error={error}
+      transactions={data ? formattedData : undefined}
+    />
   );
 }
 

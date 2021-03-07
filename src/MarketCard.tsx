@@ -10,6 +10,8 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import PriceHistory from "./PriceHistory";
+import { ApolloError } from "@apollo/client";
+import { IFormattedTransaction } from "./interfaces/Interfaces";
 
 interface Asset {
   permalink: string;
@@ -41,7 +43,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-function MarketCard(props: { address: string }) {
+function MarketCard(props: { address: string, loading: boolean, error: ApolloError | undefined, transactions: IFormattedTransaction[] | undefined }) {
   const [assetData, setAssetData] = useState<Asset[] | []>([]);
   const classes = useStyles();
 
@@ -85,10 +87,9 @@ function MarketCard(props: { address: string }) {
         >
           Last sale:{" "}
           {assetData.length > 0
-            ? `${
-                parseInt(assetData[0].last_sale.total_price) /
-                Math.pow(10, assetData[0].last_sale.payment_token.decimals)
-              } ${assetData[0].last_sale.payment_token.symbol}`
+            ? `${parseInt(assetData[0].last_sale.total_price) /
+            Math.pow(10, assetData[0].last_sale.payment_token.decimals)
+            } ${assetData[0].last_sale.payment_token.symbol}`
             : ""}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
@@ -96,15 +97,19 @@ function MarketCard(props: { address: string }) {
         </Typography>
       </CardContent>
       <CardActions>
-      <Button
-        href={assetData.length > 0 ? assetData[0].permalink : ""}
-        target="_blank"
-        size="small"
-      >
-        Check Out
+        <Button
+          href={assetData.length > 0 ? assetData[0].permalink : ""}
+          target="_blank"
+          size="small"
+        >
+          Check Out
       </Button>
-      {/* <PriceHistory /> */}
-    </CardActions>
+        <PriceHistory
+          transactions={props.transactions}
+          loading={props.loading}
+          error={props.error}
+        />
+      </CardActions>
     </Card>
   );
 }
