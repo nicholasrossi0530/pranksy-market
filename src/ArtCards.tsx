@@ -7,16 +7,25 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  List,
+  ListItem,
+  ListItemText,
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 interface Asset {
+  id: number;
   permalink: string;
   name: string;
   description: string;
   image_url: string;
   last_sale: LastSale;
+  creator: CreatorInfo;
+}
+
+interface CreatorInfo {
+  profile_img_url: string;
 }
 
 interface LastSale {
@@ -56,8 +65,12 @@ function ArtCards(props: { address: string }) {
   return (
     <>
       {data.map((item: Asset) => {
+        const descriptions = item.description.match(/[^\r\n]+/g)!;
+        const artist = descriptions[1];
+        const message = descriptions[4];
+        const artistNote = descriptions[5];
         return (
-          <Card className={classes.marketCard}>
+          <Card className={classes.marketCard} key={item.id}>
             <CardMedia
                 component={item && item.image_url.includes('.mp4')? "video" : "img"}
                 alt="NFTBox"
@@ -67,8 +80,23 @@ function ArtCards(props: { address: string }) {
             />
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
-                {item ? item.name.replace(/([#])\d+/g, "") : ""}
+                {item ? item.name : ""}
               </Typography>
+              <List>
+                <ListItem>
+                  <ListItemText primary={artist} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary={message}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText className={classes.multiLineEllipsis}
+                    primary={artistNote}
+                  />
+                </ListItem>
+              </List>
               <Typography
                 gutterBottom
                 variant="body2"
@@ -82,9 +110,6 @@ function ArtCards(props: { address: string }) {
                       Math.pow(10, item.last_sale.payment_token.decimals)
                     } ${item.last_sale.payment_token.symbol}`
                   : ""}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {item ? item.description : ""}
               </Typography>
             </CardContent>
             <CardActions className={classes.buttonContainer}>
@@ -115,6 +140,13 @@ const useStyles = makeStyles(() => ({
   buttonContainer: {},
   image: {
       height: '450px'
+  },
+  multiLineEllipsis: {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    display: "-webkit-box",
+    "-webkit-line-clamp": 4,
+    "-webkit-box-orient": "vertical"
   }
 }));
 
