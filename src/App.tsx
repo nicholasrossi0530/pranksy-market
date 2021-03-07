@@ -2,7 +2,6 @@ import "./App.css";
 import React, { useState } from "react";
 import { Grid, IconButton } from "@material-ui/core";
 import { makeStyles, ThemeOptions } from "@material-ui/core/styles";
-import MarketCard from "./MarketCard";
 import JanuaryCard from "./JanuaryCard";
 import FebruaryCard from "./FebruaryCard";
 import ComingSoonCard from "./ComingSoonCard";

@@ -3,13 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { ApolloClient, InMemoryCache } from '@apollo/client';
-import { ApolloProvider } from '@apollo/client';
-
-const client = new ApolloClient({
-  uri: 'https://api.thegraph.com/subgraphs/name/nicholasrossi0530/nft-box-graph',
-  cache: new InMemoryCache()
-});
 
 ReactDOM.render(
   <React.StrictMode>

@@ -13,7 +13,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import PriceHistory from "./PriceHistory";
 import { IAsset } from "./interfaces/Interfaces";
 
 const useStyles = makeStyles(() => ({
@@ -122,7 +121,6 @@ function ArtCards(props: { address: string }) {
               >
                 Check Out
               </Button>
-              {/* <PriceHistory /> */}
             </CardActions>
           </Card>
         );

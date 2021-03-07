@@ -10,14 +10,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { ApolloError, gql, useQuery } from "@apollo/client";
+import { ApolloError } from "@apollo/client";
 import { IFormattedTransaction } from "./interfaces/Interfaces";
-
-const getXDaysAgo = () => {
-    const today = new Date();
-    today.setDate(today.getDate() - 5);
-    return Date.parse(today.toString()) / 1000;
-  };
 
 const useStyles = makeStyles((theme) => ({
   modalBox: {
