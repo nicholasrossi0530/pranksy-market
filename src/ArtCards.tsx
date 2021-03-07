@@ -69,13 +69,17 @@ function ArtCards(props: { address: string }) {
         const artistNote = descriptions[5];
         return (
           <Card className={classes.marketCard} key={item.id}>
-            <CardMedia
-                component={item && item.image_url.includes('.mp4')? "video" : "img"}
+            {
+              item && item.animation_url &&
+              item.animation_url.includes('.mp4') ? <video autoPlay muted loop src={item.animation_url!} height={450} preload="auto" controlsList="nodownload"/> :
+              <CardMedia
+                component={item && item.animation_url ? "video" : "img"}
                 alt="NFTBox"
                 height="450px"
                 title="NFTBox"
-                src={item ? item.image_url : ""}
-            />
+                src={item ? item.animation_url ?? item.image_url : ""}
+              />
+            }
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
                 {item ? item.name : ""}

@@ -25,6 +25,7 @@ export interface IAsset {
   image_url: string;
   last_sale: ILastSale;
   creator: ICreatorInfo;
+  animation_url: string | null;
 }
 
 export interface ICreatorInfo {
