@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import PriceHistory from "./PriceHistory";
 
 interface Asset {
   permalink: string;
@@ -95,6 +96,7 @@ function ArtCards(props: { address: string }) {
               >
                 Check Out
               </Button>
+              <PriceHistory />
             </CardActions>
           </Card>
         );
