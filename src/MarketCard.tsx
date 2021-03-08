@@ -12,6 +12,7 @@ import axios from "axios";
 import PriceHistory from "./PriceHistory";
 import { ApolloClient, DocumentNode, NormalizedCacheObject } from "@apollo/client";
 import { IAsset } from "./interfaces/Interfaces";
+import { coinSymbolConverter } from "./utils/Utility";
 
 const useStyles = makeStyles(() => ({
   marketCard: {
@@ -77,9 +78,9 @@ function MarketCard(props: { address: string, query: DocumentNode, client: Apoll
         >
           Last sale:{" "}
           {assetData.length > 0
-            ? `${parseInt(assetData[0].last_sale.total_price) /
-            Math.pow(10, assetData[0].last_sale.payment_token.decimals)
-            } ${assetData[0].last_sale.payment_token.symbol}`
+            ? `${Number(parseInt(assetData[0].last_sale.total_price) /
+            Math.pow(10, assetData[0].last_sale.payment_token.decimals)).toFixed(4)
+            } ${coinSymbolConverter(assetData[0].last_sale.payment_token.symbol)}`
             : ""}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">

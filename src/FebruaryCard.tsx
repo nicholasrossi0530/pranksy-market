@@ -34,7 +34,6 @@ const QUERY = () => {
 }
 `};
 
-
 const client = new ApolloClient({
   uri:
     "https://api.thegraph.com/subgraphs/name/nicholasrossi0530/nft-feb-box-graph",

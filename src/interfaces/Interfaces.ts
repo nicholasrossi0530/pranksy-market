@@ -13,7 +13,7 @@ export interface ITransaction {
 
 export interface IFormattedTransaction extends ITransaction {
   formattedTimestamp: string;
-  formattedValue: string;
+  Price: string;
   day: number;
 }
 

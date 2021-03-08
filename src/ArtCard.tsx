@@ -15,6 +15,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { IAsset } from "./interfaces/Interfaces";
 import PriceHistory from "./PriceHistory";
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
+import { coinSymbolConverter } from "./utils/Utility";
 
 const useStyles = makeStyles(() => ({
   marketCard: {
@@ -144,9 +145,9 @@ function ArtCard(props: { item: IAsset; address: string }) {
           Last sale:{" "}
           {props.item
             ? `${
-                parseInt(props.item.last_sale.total_price) /
-                Math.pow(10, props.item.last_sale.payment_token.decimals)
-              } ${props.item.last_sale.payment_token.symbol}`
+                Number(parseInt(props.item.last_sale.total_price) /
+                Math.pow(10, props.item.last_sale.payment_token.decimals)).toFixed(4)
+              } ${coinSymbolConverter(props.item.last_sale.payment_token.symbol)}`
             : ""}
         </Typography>
       </CardContent>
