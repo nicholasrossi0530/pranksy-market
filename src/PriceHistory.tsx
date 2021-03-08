@@ -87,6 +87,7 @@ function PriceHistory(props: {
   open: boolean;
   handleClose: ((event: {}, reason: "backdropClick" | "escapeKeyDown") => void) | undefined;
 }) {
+
   const classes = useStyles();
   const { loading, error, data } = useQuery(props.query, {
     client: props.client
