@@ -10,9 +10,9 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import PriceHistory from "./PriceHistory";
-import { ApolloClient, DocumentNode, NormalizedCacheObject } from "@apollo/client";
 import { IAsset } from "./interfaces/Interfaces";
-import { coinSymbolConverter } from "./utils/Utility";
+import { coinSymbolConverter, removeEdition, getSearchTraits } from "./utils/Utility";
+import { OS_VARS } from "./utils/Schema";
 
 const useStyles = makeStyles(() => ({
   marketCard: {
@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-function MarketCard(props: { address: string, query: DocumentNode, client: ApolloClient<NormalizedCacheObject> }) {
+function MarketCard(props: { address: string }) {
   const [assetData, setAssetData] = useState<IAsset[] | []>([]);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -98,14 +98,17 @@ function MarketCard(props: { address: string, query: DocumentNode, client: Apoll
         <Button onClick={handleOpen} size="small">
           Price History
         </Button>
-        {open && 
+        {open && (
           <PriceHistory
-            query={props.query}
-            client={props.client}
             handleClose={handleClose}
             open={open}
+            queryVariables={OS_VARS(
+              removeEdition(assetData.length > 0 ? assetData[0].name : ""),
+              getSearchTraits(assetData.length > 0 ? assetData[0].traits : []),
+              "nftbox"
+            )}
           />
-        }
+        )}
       </CardActions>
     </Card>
   );

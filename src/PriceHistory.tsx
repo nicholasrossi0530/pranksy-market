@@ -11,12 +11,10 @@ import {
   YAxis,
 } from "recharts";
 import {
-  ApolloClient,
-  DocumentNode,
-  NormalizedCacheObject,
   useQuery,
 } from "@apollo/client";
-import { IFormattedTransaction, ITransaction } from "./interfaces/Interfaces";
+import { ILooseObject } from "./interfaces/Interfaces";
+import { OS_SCHEMA } from "./utils/Schema";
 
 const useStyles = makeStyles((theme) => ({
   modalBox: {
@@ -30,81 +28,62 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-interface LooseObject {
-  [key: string]: any
-}
+const formatSaleData = (edges: ILooseObject[]) => {
+  const results: ILooseObject = {};
 
-const formatData = (transacations: ITransaction[]) => {
-  var daily: LooseObject = {};
-  var maxValue = 0;
-  transacations.forEach((item) => {
-    const date = new Date(parseInt(item.timestamp) * 1000);
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const dateString = `${date.getFullYear()}${month < 10 ? 0 : ''}${month}${day < 10 ? 0 : ''}${day}`;
-    const value = parseInt(item.value) / Math.pow(10, 18);
-    const formattedItem = {
-      ...item,
-      formattedTimestamp: date.toLocaleDateString(),
-      Price: value.toFixed(4).toString(),
-      day: dateString
-    };
-    maxValue = value > maxValue ? value : maxValue;
-
-    if (daily[dateString] === null || daily[dateString] === undefined) {
-      daily[dateString] = [formattedItem]
-    } else {
-      daily[dateString].push(formattedItem);
+  edges.forEach((edge) => {
+    if (edge.node.asset.assetEventData.lastSale) {
+      const date = new Date(edge.node.asset.assetEventData.lastSale.timestamp);
+      const timestamp = date.toLocaleDateString();
+      const value = Number(edge.node.asset.assetEventData.lastSale.unitPriceQuantity.quantity / Math.pow(10, 18)).toString();
+      const result = {
+        value,
+        timestamp
+      };
+      if (results[timestamp]) {
+        results[timestamp].push(result);
+      } else {
+        results[timestamp] = [result];
+      }
     }
-
   });
-
-  const averageTransactions: IFormattedTransaction[] = [];
-  Object.keys(daily).forEach((key: string) => {
+  
+  const dailyResult: ILooseObject[] = [];
+  Object.keys(results).forEach((key) => {
     var totalValue = 0;
     var totalCount = 0;
-    var averageDay: IFormattedTransaction = daily[key][0];
+    var average: ILooseObject = {};
 
-    daily[key].forEach((transaction: IFormattedTransaction) => {
+    results[key].forEach((item: ILooseObject) => {
       totalCount++;
-      totalValue += parseFloat(transaction.Price);
+      totalValue += parseFloat(item.value);
     });
 
     const averageValue = totalValue / totalCount;
-    averageDay.Price = `${averageValue}`;
-    averageTransactions.push(averageDay);
+    average.value = `${averageValue}`;
+    average.timestamp = key;
+    average.volume = totalCount;
+    dailyResult.push(average);
   });
 
-  return {
-    averageTransactions,
-    maxValue
-  };
+  return dailyResult.reverse();
 };
 
 function PriceHistory(props: {
-  query: DocumentNode;
-  client: ApolloClient<NormalizedCacheObject>;
   open: boolean;
+  queryVariables: ILooseObject;
   handleClose: ((event: {}, reason: "backdropClick" | "escapeKeyDown") => void) | undefined;
 }) {
 
   const classes = useStyles();
-  const { loading, error, data } = useQuery(props.query, {
-    client: props.client
+  const { loading, error, data } = useQuery(OS_SCHEMA, {
+    variables: props.queryVariables
   });
-  const [formattedData, setFormattedData] = useState<IFormattedTransaction[]>();
-  const [ticks, setTicks] = useState<number[]>();
+  const [saleData, setSaleData] = useState<ILooseObject[]>([]);
 
   useEffect(() => {
     if (data !== undefined && data !== null) {
-      const formattedData = formatData(data.transactions);
-      const ticks = [];
-      const max = formattedData.maxValue;
-      setFormattedData(formattedData.averageTransactions);
-      for (var i = 0; i < Math.ceil(max <= 1.5 ? 1.5 : max); i+=0.5) {
-        ticks.push(i);
-      }
-      setTicks(ticks);
+      setSaleData(formatSaleData(data.query.search.edges));
     }
   }, [data]);
 
@@ -123,7 +102,7 @@ function PriceHistory(props: {
         <AreaChart
           width={750}
           height={750}
-          data={formattedData}
+          data={saleData}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
           className={classes.areaChart}
         >
@@ -138,18 +117,16 @@ function PriceHistory(props: {
             </linearGradient>
           </defs>
           <XAxis
-            dataKey="formattedTimestamp"
+            dataKey="timestamp"
           />
           <YAxis
-            dataKey="Price"
-            tickSize={1}
-            ticks={ticks}
+            dataKey="value"
           />
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip />
           <Area
             type="monotone"
-            dataKey="Price"
+            dataKey="value"
             stroke="#8884d8"
             fillOpacity={1}
             fill="url(#colorUv)"

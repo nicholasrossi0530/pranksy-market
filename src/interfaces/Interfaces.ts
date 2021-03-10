@@ -1,3 +1,6 @@
+export interface ILooseObject {
+  [key: string]: any
+}
 export interface ITransaction {
   from: string;
   gasPrice: string;
@@ -27,6 +30,12 @@ export interface IAsset {
   creator: ICreatorInfo;
   animation_url: string | null;
   token_id: string;
+  traits: ITrait[];
+}
+
+export interface ITrait {
+  trait_type: string;
+  value: string;
 }
 
 export interface ICreatorInfo {

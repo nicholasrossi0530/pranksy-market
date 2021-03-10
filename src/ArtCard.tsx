@@ -14,11 +14,11 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { IAsset } from "./interfaces/Interfaces";
 import PriceHistory from "./PriceHistory";
-import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
-import { coinSymbolConverter } from "./utils/Utility";
+import { coinSymbolConverter, removeEdition, getSearchTraits } from "./utils/Utility";
+import { OS_VARS } from "./utils/Schema";
 
 const useStyles = makeStyles(() => ({
-  marketCard: {
+  artCard: {
     maxWidth: "450px",
     margin: "1em 0",
     maxHeight: "950px",
@@ -26,7 +26,6 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     justifyContent: "space-between",
   },
-  buttonContainer: {},
   image: {
     height: "450px",
   },
@@ -39,47 +38,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const getXDaysAgo = () => {
-  const today = new Date();
-  today.setDate(today.getDate() - 7);
-  return Date.parse(today.toString()) / 1000;
-};
-
-const client = new ApolloClient({
-  uri:
-    "https://api.thegraph.com/subgraphs/name/nicholasrossi0530/nft-box-art-graph",
-  cache: new InMemoryCache(),
-});
-
 function ArtCard(props: { item: IAsset; address: string }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const QUERY = (days: number, tokenId: string) => {
-    return gql`
-  {
-    transactions(
-      orderBy: "timestamp"
-      orderDirection: "asc"
-      where: {
-        value_gt: 0,
-        # timestamp_gt: ${getXDaysAgo()},
-        tokenId: ${tokenId}
-      }
-    ) {
-      id
-      hash
-      index
-      from
-      to
-      value
-      gasUsed
-      gasPrice
-      timestamp
-      tokenId
-    }
-  }
-`;
-  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -94,7 +55,7 @@ function ArtCard(props: { item: IAsset; address: string }) {
   const message = descriptions[4];
   const artistNote = descriptions[5];
   return (
-    <Card className={classes.marketCard} key={props.item.id}>
+    <Card className={classes.artCard} key={props.item.id}>
       {props.item &&
       props.item.animation_url &&
       props.item.animation_url.includes(".mp4") ? (
@@ -151,7 +112,7 @@ function ArtCard(props: { item: IAsset; address: string }) {
             : ""}
         </Typography>
       </CardContent>
-      <CardActions className={classes.buttonContainer}>
+      <CardActions>
         <Button
           href={props.item ? props.item.permalink : ""}
           target="_blank"
@@ -164,10 +125,13 @@ function ArtCard(props: { item: IAsset; address: string }) {
         </Button>
         {open && (
           <PriceHistory
-            query={QUERY(0, props.item.token_id)}
-            client={client}
             handleClose={handleClose}
             open={open}
+            queryVariables={OS_VARS(
+              removeEdition(props.item.name),
+              getSearchTraits(props.item.traits),
+              "nftboxes"
+            )}
           />
         )}
       </CardActions>

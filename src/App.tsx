@@ -2,8 +2,7 @@ import "./App.css";
 import React, { useState } from "react";
 import { Grid, IconButton } from "@material-ui/core";
 import { makeStyles, ThemeOptions } from "@material-ui/core/styles";
-import JanuaryCard from "./JanuaryCard";
-import FebruaryCard from "./FebruaryCard";
+import MarketCard from "./MarketCard";
 import ComingSoonCard from "./ComingSoonCard";
 import { createMuiTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
 import Brightness7Icon from "@material-ui/icons/Brightness7";
@@ -12,6 +11,7 @@ import ArtCard from "./ArtCard";
 import { IAsset } from "./interfaces/Interfaces";
 import InfiniteScroll from "react-infinite-scroller";
 import axios from "axios";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
 const light: ThemeOptions = {
   palette: {
@@ -35,6 +35,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const client = new ApolloClient({
+  uri: "https://api.opensea.io/graphql/",
+  cache: new InMemoryCache(),
+});
+
 function App() {
   const [theme, setTheme] = useState(true);
   const icon = theme ? <Brightness7Icon /> : <Brightness3Icon />;
@@ -43,6 +48,8 @@ function App() {
   const appliedTheme = createMuiTheme(theme ? dark : light);
   const [assetData, setAssetData] = useState<IAsset[] | []>([]);
   const [hasMore, setHasMore] = useState(true);
+  const JAN_BOX_ADDRESS = "0x5F8061F9d6A2Bb4688F46491cCA7658e214E2Cb6";
+  const FEB_BOX_ADDRESS = "0x067ab2FbdBED63401aF802d1DD786E6D83b0ff1B";
 
   const fetchData = async (page: number) => {
     const result = await axios("https://api.opensea.io/api/v1/assets", {
@@ -70,40 +77,42 @@ function App() {
   };
 
   return (
-    <InfiniteScroll
-      pageStart={0}
-      loadMore={fetchData}
-      hasMore={hasMore}
-      initialLoad={true}
-      threshold={1000}
-      loader={
-        <div className="loader" key={0}>
-          Loading ...
-        </div>
-      }
-    >
-      <ThemeProvider theme={appliedTheme}>
-        <CssBaseline />
-        <Grid container spacing={1}>
-          <IconButton
-            edge="end"
-            color="inherit"
-            aria-label="mode"
-            onClick={() => setTheme(!theme)}
-          >
-            {icon}
-          </IconButton>
-          <Grid container item xs={12} spacing={4} className={classes.root}>
-            <JanuaryCard />
-            <FebruaryCard />
-            <ComingSoonCard />
-            {assetData.map((item: IAsset) => {
-              return <ArtCard address={ART_ADDRESS} item={item} />;
-            })}
+    <ApolloProvider client={client}>
+      <InfiniteScroll
+        pageStart={0}
+        loadMore={fetchData}
+        hasMore={hasMore}
+        initialLoad={true}
+        threshold={1000}
+        loader={
+          <div className="loader" key={0}>
+            Loading ...
+          </div>
+        }
+      >
+        <ThemeProvider theme={appliedTheme}>
+          <CssBaseline />
+          <Grid container spacing={1}>
+            <IconButton
+              edge="end"
+              color="inherit"
+              aria-label="mode"
+              onClick={() => setTheme(!theme)}
+            >
+              {icon}
+            </IconButton>
+            <Grid container item xs={12} spacing={4} className={classes.root}>
+              <MarketCard address={JAN_BOX_ADDRESS} />
+              <MarketCard address={FEB_BOX_ADDRESS} />
+              <ComingSoonCard />
+              {assetData.map((item: IAsset) => {
+                return <ArtCard address={ART_ADDRESS} item={item} />;
+              })}
+            </Grid>
           </Grid>
-        </Grid>
-      </ThemeProvider>
-    </InfiniteScroll>
+        </ThemeProvider>
+      </InfiniteScroll>
+    </ApolloProvider>
   );
 }
 
