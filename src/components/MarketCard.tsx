@@ -17,6 +17,7 @@ import {
   getSearchTraits,
 } from "../utils/Utility";
 import { OS_VARS } from "../utils/Schema";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
   marketCard: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function MarketCard(props: { address: string, box: string }) {
+function MarketCard(props: { address: string; box: string }) {
   const [assetData, setAssetData] = useState<IAsset[] | []>([]);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -102,9 +103,9 @@ function MarketCard(props: { address: string, box: string }) {
         >
           Check Out
         </Button>
-        <Button href={`/nftbox/${props.box}`} size="small">
-          Contents
-        </Button>
+        <Link to={`/nftbox/${props.box}`}>
+          <Button size="small">Contents</Button>
+        </Link>
         <Button onClick={handleOpen} size="small">
           Price History
         </Button>
