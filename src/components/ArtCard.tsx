@@ -70,10 +70,15 @@ function ArtCard(props: { item: IAsset; address: string }) {
         />
       ) : (
         <CardMedia
-          component={props.item && props.item.animation_url ? "video" : "img"}
+          component={props.item && props.item.image_url && props.item.image_url.includes(".mp4") ? "video" : "img"}
           alt="NFTBox"
           height="450px"
           title="NFTBox"
+          autoPlay={true}
+          muted={true}
+          loop={true}
+          preload={"auto"}
+          controlsList={"nodownload"}
           src={
             props.item ? props.item.animation_url ?? props.item.image_url : ""
           }
