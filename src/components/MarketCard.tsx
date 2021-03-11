@@ -28,6 +28,9 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     justifyContent: "space-between",
   },
+  link: {
+    textDecoration: "none"
+  }
 }));
 
 function MarketCard(props: { address: string; box: string }) {
@@ -103,7 +106,7 @@ function MarketCard(props: { address: string; box: string }) {
         >
           Check Out
         </Button>
-        <Link to={`/nftbox/${props.box}`}>
+        <Link to={`/nftbox/${props.box}`} className={classes.link}>
           <Button size="small">Contents</Button>
         </Link>
         <Button onClick={handleOpen} size="small">
