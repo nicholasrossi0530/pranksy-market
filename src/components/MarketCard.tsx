@@ -34,18 +34,18 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-function MarketCard(props: { address: string; box?: string }) {
+function MarketCard(props: { address: string; box?: string, orderBy: string, tokenId?: number }) {
   const [assetData, setAssetData] = useState<IAsset[] | []>([]);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios("https://api.opensea.io/api/v1/assets", {
+      const result = await axios(`https://api.opensea.io/api/v1/assets${props.tokenId ? `?token_ids=${props.tokenId}` : ""}`, {
         params: {
           asset_contract_address: props.address,
-          order_by: "sale_date",
-          limit: 1,
+          order_by: props.orderBy,
+          limit: 1
         },
       });
       if (result.status === 200) {
@@ -56,7 +56,7 @@ function MarketCard(props: { address: string; box?: string }) {
     };
 
     fetchData();
-  }, [props.address]);
+  }, [props.address, props.orderBy, props.tokenId]);
 
   const handleOpen = () => {
     setOpen(true);

@@ -93,9 +93,9 @@ function App() {
                     spacing={4}
                     className={classes.root}
                   >
-                    <MarketCard address={JAN_BOX_ADDRESS} box={"genesis"} />
-                    <MarketCard address={FEB_BOX_ADDRESS} box={"grow"} />
-                    <MarketCard address={"0x5237E33D805339925aA5ab220F13B386357aa349"} />
+                    <MarketCard address={JAN_BOX_ADDRESS} box={"genesis"} orderBy={"sale_date"} />
+                    <MarketCard address={FEB_BOX_ADDRESS} box={"grow"} orderBy={"sale_date"} />
+                    <MarketCard address={"0x5237E33D805339925aA5ab220F13B386357aa349"} orderBy={"tokenId"} tokenId={3} />
                     <ComingSoonCard name={"March 2021 Box"} />
                   </Grid>
                 </Grid>
