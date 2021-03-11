@@ -5,6 +5,7 @@ import {
   Card,
   CardActions,
   CardContent,
+  CardMedia,
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -33,7 +34,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-function MarketCard(props: { address: string; box: string }) {
+function MarketCard(props: { address: string; box?: string }) {
   const [assetData, setAssetData] = useState<IAsset[] | []>([]);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -67,11 +68,39 @@ function MarketCard(props: { address: string; box: string }) {
 
   return (
     <Card className={classes.marketCard}>
-      <img
+      {/* <img
         alt="NFT Box"
         style={{ height: 450 }}
         src={assetData.length > 0 ? assetData[0].image_url : ""}
-      />
+      /> */}
+      {assetData.length > 0 &&
+      assetData[0].animation_url &&
+      assetData[0].animation_url.includes(".mp4") ? (
+        <video
+          autoPlay
+          muted
+          loop
+          src={assetData[0].animation_url!}
+          height={450}
+          preload="auto"
+          controlsList="nodownload"
+        />
+      ) : (
+        <CardMedia
+          component={assetData.length > 0 && assetData[0].image_url && assetData[0].image_url.includes(".mp4")? "video" : "img"}
+          alt="NFTBox"
+          height="450px"
+          title="NFTBox"
+          autoPlay={true}
+          muted={true}
+          loop={true}
+          preload={"auto"}
+          controlsList={"nodownload"}
+          src={
+            assetData.length > 0 ? assetData[0].animation_url ?? assetData[0].image_url : ""
+          }
+        />
+      )}
       <CardContent>
         <Typography gutterBottom variant="h5" component="h2">
           {assetData.length > 0
@@ -106,9 +135,11 @@ function MarketCard(props: { address: string; box: string }) {
         >
           Check Out
         </Button>
-        <Link to={`/nftbox/${props.box}`} className={classes.link}>
-          <Button size="small">Contents</Button>
-        </Link>
+        {props.box &&
+          <Link to={`/nftbox/${props.box}`} className={classes.link}>
+            <Button size="small">Contents</Button>
+          </Link>
+        }
         <Button onClick={handleOpen} size="small">
           Price History
         </Button>
