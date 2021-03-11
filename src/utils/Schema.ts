@@ -620,7 +620,7 @@ export const OS_VARS = (name: string, traits: ILooseObject[], collection: string
     "collectionQuery": null,
     "collectionSortBy": "SEVEN_DAY_VOLUME",
     "collections": [
-      "nftboxes"
+      collection
     ],
     "count": 32,
     "cursor": null,

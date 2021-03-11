@@ -27,7 +27,7 @@ const dark: ThemeOptions = {
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    justifyContent: "space-evenly",
+    justifyContent: "center",
     marginTop: "50px",
     flexWrap: "wrap",
     padding: "0px 150px",
@@ -93,9 +93,9 @@ function App() {
                     spacing={4}
                     className={classes.root}
                   >
-                    <MarketCard address={JAN_BOX_ADDRESS} box={"genesis"} orderBy={"sale_date"} />
-                    <MarketCard address={FEB_BOX_ADDRESS} box={"grow"} orderBy={"sale_date"} />
-                    <MarketCard address={"0x5237E33D805339925aA5ab220F13B386357aa349"} orderBy={"tokenId"} tokenId={3} />
+                    <MarketCard address={JAN_BOX_ADDRESS} box={"genesis"} orderBy={"sale_date"} collection="nftbox" />
+                    <MarketCard address={FEB_BOX_ADDRESS} box={"grow"} orderBy={"sale_date"} collection="nftbox" />
+                    <MarketCard address={"0x5237E33D805339925aA5ab220F13B386357aa349"} orderBy={"tokenId"} tokenId={3} collection="nftboxes" />
                     <ComingSoonCard name={"March 2021 Box"} />
                   </Grid>
                 </Grid>

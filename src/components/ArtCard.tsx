@@ -6,6 +6,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  CircularProgress,
   List,
   ListItem,
   ListItemText,
@@ -20,7 +21,7 @@ import { OS_VARS } from "../utils/Schema";
 const useStyles = makeStyles(() => ({
   artCard: {
     maxWidth: "450px",
-    margin: "1em 0",
+    margin: "1em 0.5em",
     maxHeight: "950px",
     display: "flex",
     flexDirection: "column",
@@ -36,11 +37,15 @@ const useStyles = makeStyles(() => ({
     "-webkit-line-clamp": 4,
     "-webkit-box-orient": "vertical",
   },
+  spinner: {
+    color: "#ffdc11"
+  }
 }));
 
 function ArtCard(props: { item: IAsset; address: string }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [priceHistoryLoading, setPriceHistoryLoading] = React.useState(false);
 
   const handleOpen = () => {
     setOpen(true);
@@ -126,11 +131,12 @@ function ArtCard(props: { item: IAsset; address: string }) {
           Check Out
         </Button>
         <Button onClick={handleOpen} size="small">
-          Price History
+          {priceHistoryLoading ? <CircularProgress className={classes.spinner} size={20} /> : "Price History"}
         </Button>
         {open && (
           <PriceHistory
             handleClose={handleClose}
+            setPriceHistoryLoading={setPriceHistoryLoading}
             open={open}
             queryVariables={OS_VARS(
               removeEdition(props.item.name),

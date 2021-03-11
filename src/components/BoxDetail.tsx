@@ -26,7 +26,9 @@ function BoxDetail() {
       };
   
     useEffect(() => {
-      fetchData();
+      if (assetData.length === 0) {
+        fetchData();
+      }
     });
   
     return (
