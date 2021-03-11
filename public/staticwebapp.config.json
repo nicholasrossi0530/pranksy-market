@@ -1,6 +1,16 @@
 {
   "routes": [
     {
+      "route": "/nftbox/genesis",
+      "serve": "/index.html",
+      "statusCode": 200
+    },
+    {
+      "route": "/nftbox/grow",
+      "serve": "/index.html",
+      "statusCode": 200
+    },
+    {
       "route": "/nftbox/*",
       "serve": "/index.html",
       "statusCode": 200
