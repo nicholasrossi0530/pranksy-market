@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
+import "../App.css";
 import { Modal } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -13,8 +13,8 @@ import {
 import {
   useQuery,
 } from "@apollo/client";
-import { ILooseObject } from "./interfaces/Interfaces";
-import { OS_SCHEMA } from "./utils/Schema";
+import { ILooseObject } from "../interfaces/Interfaces";
+import { OS_SCHEMA } from "../utils/Schema";
 
 const useStyles = makeStyles((theme) => ({
   modalBox: {

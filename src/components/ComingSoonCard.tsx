@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.css";
+import "../App.css";
 import {
   Card,
   CardContent,
@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-function ComingSoonCard() {
+function ComingSoonCard(props: { name: string }) {
   const classes = useStyles();
   const IMAGE_URL =
     "https://media.giphy.com/media/xTiN0IuPQxRqzxodZm/giphy.gif";
@@ -20,7 +20,7 @@ function ComingSoonCard() {
       </Container>
       <CardContent>
         <Typography gutterBottom variant="h5" component="h2">
-          March Box
+          {props.name}
         </Typography>
         <Typography
           gutterBottom

@@ -1,3 +1,7 @@
+export interface IParamType {
+  box: string;
+}
+
 export interface ILooseObject {
   [key: string]: any
 }

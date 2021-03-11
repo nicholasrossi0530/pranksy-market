@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.css";
+import "../App.css";
 import {
   Button,
   Card,
@@ -12,10 +12,10 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { IAsset } from "./interfaces/Interfaces";
+import { IAsset } from "../interfaces/Interfaces";
 import PriceHistory from "./PriceHistory";
-import { coinSymbolConverter, removeEdition, getSearchTraits } from "./utils/Utility";
-import { OS_VARS } from "./utils/Schema";
+import { removeEdition, getSearchTraits } from "../utils/Utility";
+import { OS_VARS } from "../utils/Schema";
 
 const useStyles = makeStyles(() => ({
   artCard: {
@@ -97,20 +97,20 @@ function ArtCard(props: { item: IAsset; address: string }) {
             />
           </ListItem>
         </List>
-        <Typography
+        {/* <Typography
           gutterBottom
           variant="body2"
           color="textSecondary"
           component="p"
         >
           Last sale:{" "}
-          {props.item
+          {props.item && props.item.last_sale
             ? `${
                 Number(parseInt(props.item.last_sale.total_price) /
                 Math.pow(10, props.item.last_sale.payment_token.decimals)).toFixed(4)
               } ${coinSymbolConverter(props.item.last_sale.payment_token.symbol)}`
             : ""}
-        </Typography>
+        </Typography> */}
       </CardContent>
       <CardActions>
         <Button

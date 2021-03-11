@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
+import "../App.css";
 import {
   Button,
   Card,
@@ -10,9 +10,13 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import PriceHistory from "./PriceHistory";
-import { IAsset } from "./interfaces/Interfaces";
-import { coinSymbolConverter, removeEdition, getSearchTraits } from "./utils/Utility";
-import { OS_VARS } from "./utils/Schema";
+import { IAsset } from "../interfaces/Interfaces";
+import {
+  coinSymbolConverter,
+  removeEdition,
+  getSearchTraits,
+} from "../utils/Utility";
+import { OS_VARS } from "../utils/Schema";
 
 const useStyles = makeStyles(() => ({
   marketCard: {
@@ -22,10 +26,10 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-  }
+  },
 }));
 
-function MarketCard(props: { address: string }) {
+function MarketCard(props: { address: string, box: string }) {
   const [assetData, setAssetData] = useState<IAsset[] | []>([]);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -77,10 +81,13 @@ function MarketCard(props: { address: string }) {
           component="p"
         >
           Last sale:{" "}
-          {assetData.length > 0
-            ? `${Number(parseInt(assetData[0].last_sale.total_price) /
-            Math.pow(10, assetData[0].last_sale.payment_token.decimals)).toFixed(4)
-            } ${coinSymbolConverter(assetData[0].last_sale.payment_token.symbol)}`
+          {assetData.length > 0 && assetData[0].last_sale
+            ? `${Number(
+                parseInt(assetData[0].last_sale.total_price) /
+                  Math.pow(10, assetData[0].last_sale.payment_token.decimals)
+              ).toFixed(4)} ${coinSymbolConverter(
+                assetData[0].last_sale.payment_token.symbol
+              )}`
             : ""}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
@@ -94,7 +101,10 @@ function MarketCard(props: { address: string }) {
           size="small"
         >
           Check Out
-      </Button>
+        </Button>
+        <Button href={`/nftbox/${props.box}`} size="small">
+          Contents
+        </Button>
         <Button onClick={handleOpen} size="small">
           Price History
         </Button>

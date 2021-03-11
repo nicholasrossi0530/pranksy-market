@@ -1,6 +1,6 @@
 import React from "react";
 import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Area } from "recharts";
-import { ITransaction } from './interfaces/Interfaces';
+import { ITransaction } from '../interfaces/Interfaces';
 
 function MarketDetailModal(props: { transactions: ITransaction[] }) {
 
