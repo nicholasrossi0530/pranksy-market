@@ -1,0 +1,13 @@
+{
+  "routes": [
+    {
+      "route": "/"
+    },
+    {
+      "route": "/nftbox/genesis"
+    },
+    {
+      "route": "/nftbox/grow"
+    }
+  ]
+}
