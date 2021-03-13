@@ -9,6 +9,7 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  ResponsiveContainer,
 } from "recharts";
 import { useQuery } from "@apollo/client";
 import { ILooseObject } from "../interfaces/Interfaces";
@@ -18,14 +19,13 @@ const useStyles = makeStyles((theme) => ({
   modalBox: {
     margin: "auto",
     display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   },
   areaChart: {
     margin: "auto",
     display: "flex",
-    backgroundColor: "white",
-    maxWidth: "750px",
-    maxHeight: "750px",
-    width: "100%"
+    backgroundColor: "white"
   },
 }));
 
@@ -109,35 +109,38 @@ function PriceHistory(props: {
           aria-describedby="simple-modal-description"
           className={classes.modalBox}
         >
-          <AreaChart
-            width={750}
-            height={750}
-            data={saleData}
-            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-            className={classes.areaChart}
+          <ResponsiveContainer
+            width={"95%"}
+            height={"90%"}
           >
-            <defs>
-              <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-              </linearGradient>
-              <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <XAxis dataKey="timestamp" />
-            <YAxis dataKey="value" />
-            <CartesianGrid strokeDasharray="3 3" />
-            <Tooltip />
-            <Area
-              type="monotone"
-              dataKey="value"
-              stroke="#8884d8"
-              fillOpacity={1}
-              fill="url(#colorUv)"
-            />
-          </AreaChart>
+            <AreaChart
+              data={saleData}
+              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+              className={classes.areaChart}
+            >
+              <defs>
+                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <XAxis dataKey="timestamp" />
+              <YAxis dataKey="value" />
+              <CartesianGrid strokeDasharray="3 3" />
+              <Tooltip />
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke="#8884d8"
+                fillOpacity={1}
+                fill="url(#colorUv)"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
         </Modal>
       </>
     );
