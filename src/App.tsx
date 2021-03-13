@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "baseline",
     marginBottom: "50px"
+  },
+  mainGrid: {
+    justifyContent: "center"
   }
 }));
 
@@ -63,22 +66,22 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={appliedTheme}>
-      <CssBaseline />
-      <Router>
-        <div>
-          {/* A <Switch> looks through its children <Route>s and
+        <CssBaseline />
+        <Router>
+          <div>
+            {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-          <Switch>
-            <Route path="/nftbox/:box">
-            <Grid container spacing={1}>
-                  <IconButton
-                    edge="end"
-                    color="inherit"
-                    aria-label="mode"
-                    onClick={() => setTheme(!theme)}
-                  >
-                    {icon}
-                  </IconButton>
+            <Switch>
+              <Route path="/nftbox/:box">
+                <IconButton
+                  edge="end"
+                  color="inherit"
+                  aria-label="mode"
+                  onClick={() => setTheme(!theme)}
+                >
+                  {icon}
+                </IconButton>
+                <Grid className={classes.mainGrid} container spacing={1}>
                   <Grid
                     container
                     item
@@ -90,17 +93,17 @@ function App() {
                   </Grid>
                 </Grid>
                 <div className={classes.devSignature}><Link target="_blank" className={classes.link} href={"https://opensea.io/accounts/nickrossi"}>Developed by: nickrossi <LaunchIcon fontSize={"small"} /></Link></div>
-            </Route>
-            <Route path="/">
-                <Grid container spacing={1}>
-                  <IconButton
-                    edge="end"
-                    color="inherit"
-                    aria-label="mode"
-                    onClick={() => setTheme(!theme)}
-                  >
-                    {icon}
-                  </IconButton>
+              </Route>
+              <Route path="/">
+                <IconButton
+                  edge="end"
+                  color="inherit"
+                  aria-label="mode"
+                  onClick={() => setTheme(!theme)}
+                >
+                  {icon}
+                </IconButton>
+                <Grid className={classes.mainGrid} container spacing={1}>
                   <Grid
                     container
                     item
@@ -111,14 +114,14 @@ function App() {
                     <MarketCard address={JAN_BOX_ADDRESS} box={"genesis"} orderBy={"sale_date"} collection="nftbox" />
                     <MarketCard address={FEB_BOX_ADDRESS} box={"grow"} orderBy={"sale_date"} collection="nftbox" />
                     <MarketCard address={"0x5237E33D805339925aA5ab220F13B386357aa349"} orderBy={"tokenId"} tokenId={3} collection="nftboxes" />
-                    <ComingSoonCard name={"March 2021 Box"} />
+                    {/* <ComingSoonCard name={"March 2021 Box"} /> */}
                   </Grid>
                 </Grid>
                 <div className={classes.devSignature}><Link target="_blank" className={classes.link} href={"https://opensea.io/accounts/nickrossi"}>Developed by: nickrossi <LaunchIcon fontSize={"small"} /></Link></div>
-            </Route>
-          </Switch>
-        </div>
-      </Router>
+              </Route>
+            </Switch>
+          </div>
+        </Router>
       </ThemeProvider>
     </ApolloProvider>
   );

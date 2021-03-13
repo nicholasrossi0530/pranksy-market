@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
     display: "flex",
     backgroundColor: "white",
+    maxWidth: "750px",
+    maxHeight: "750px",
+    width: "100%"
   },
 }));
 
