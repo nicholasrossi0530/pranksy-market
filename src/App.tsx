@@ -4,13 +4,14 @@ import { Grid, IconButton } from "@material-ui/core";
 import { makeStyles, ThemeOptions } from "@material-ui/core/styles";
 import MarketCard from "./components/MarketCard";
 import ComingSoonCard from "./components/ComingSoonCard";
-import { createMuiTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
+import { createMuiTheme, CssBaseline, ThemeProvider, Link } from "@material-ui/core";
 import Brightness7Icon from "@material-ui/icons/Brightness7";
 import Brightness3Icon from "@material-ui/icons/Brightness3";
 import BoxDetail from "./components/BoxDetail";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { FEB_BOX_ADDRESS, JAN_BOX_ADDRESS } from "./utils/Utility";
+import LaunchIcon from '@material-ui/icons/Launch';
 
 const light: ThemeOptions = {
   palette: {
@@ -33,6 +34,19 @@ const useStyles = makeStyles((theme) => ({
     padding: "0px 150px",
     marginBottom: "50px"
   },
+  link: {
+    "&:hover": {
+      textDecoration: "none",
+    },
+    textDecoration: "none",
+    color: "white"
+  },
+  devSignature: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "baseline",
+    marginBottom: "50px"
+  }
 }));
 
 const client = new ApolloClient({
@@ -75,6 +89,7 @@ function App() {
                     <BoxDetail />
                   </Grid>
                 </Grid>
+                <div className={classes.devSignature}><Link target="_blank" className={classes.link} href={"https://opensea.io/accounts/nickrossi"}>Developed by: nickrossi <LaunchIcon fontSize={"small"} /></Link></div>
             </Route>
             <Route path="/">
                 <Grid container spacing={1}>
@@ -99,6 +114,7 @@ function App() {
                     <ComingSoonCard name={"March 2021 Box"} />
                   </Grid>
                 </Grid>
+                <div className={classes.devSignature}><Link target="_blank" className={classes.link} href={"https://opensea.io/accounts/nickrossi"}>Developed by: nickrossi <LaunchIcon fontSize={"small"} /></Link></div>
             </Route>
           </Switch>
         </div>
