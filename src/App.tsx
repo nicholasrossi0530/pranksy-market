@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Grid, IconButton } from "@material-ui/core";
 import { makeStyles, ThemeOptions } from "@material-ui/core/styles";
 import MarketCard from "./components/MarketCard";
-import ComingSoonCard from "./components/ComingSoonCard";
+// import ComingSoonCard from "./components/ComingSoonCard";
 import { createMuiTheme, CssBaseline, ThemeProvider, Link } from "@material-ui/core";
 import Brightness7Icon from "@material-ui/icons/Brightness7";
 import Brightness3Icon from "@material-ui/icons/Brightness3";
