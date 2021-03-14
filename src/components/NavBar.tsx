@@ -3,12 +3,15 @@ import {
   AppBar,
   Button,
   IconButton,
+  Menu,
+  MenuItem,
   Toolbar,
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Brightness3Icon from "@material-ui/icons/Brightness3";
 import WbSunnyIcon from "@material-ui/icons/WbSunny";
+import { ILooseObject } from "../interfaces/Interfaces";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -36,6 +39,18 @@ function NavBar(props: {
 }) {
   const icon = props.theme ? <WbSunnyIcon /> : <Brightness3Icon />;
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = (event: ILooseObject) => {
+    setAnchorEl(event.currentTarget);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setOpen(false);
+  };
 
   return (
     <AppBar position="static">
@@ -75,9 +90,27 @@ function NavBar(props: {
         >
           THE TEAM
         </Button>
-        <Button color="inherit" className={`${classes.appButton} ${classes.link}`} component={Link} to={"/"}>
+        <Button ref={anchorEl} color="inherit" className={`${classes.appButton} ${classes.link}`} onClick={handleClick}>
             LISTINGS
         </Button>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={open}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+        >
+          <MenuItem onClick={handleClose} component={Link} className={classes.link} to={"/nftbox/genesis"}>Jan 2021 - Genesis Box</MenuItem>
+          <MenuItem onClick={handleClose} component={Link} className={classes.link} to={"/nftbox/grow"}>Feb 2021 - Grow Box</MenuItem>
+        </Menu>
         <IconButton
           edge="end"
           color="inherit"

@@ -11,9 +11,9 @@ function BoxDetail() {
   const [assetData, setAssetData] = useState<IAsset[] | []>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchData = async () => {
+  const fetchData = async (box: string) => {
     const result = await axios(
-      `https://api.opensea.io/api/v1/assets${getTokenIds(params.box)}`,
+      `https://api.opensea.io/api/v1/assets${getTokenIds(box)}`,
       {
         params: {
           asset_contract_address: ART_ADDRESS,
@@ -31,10 +31,8 @@ function BoxDetail() {
   };
 
   useEffect(() => {
-    if (assetData.length === 0) {
-      fetchData();
-    }
-  });
+    fetchData(params.box);
+  }, [params.box]);
 
   if (loading) {
     return (
