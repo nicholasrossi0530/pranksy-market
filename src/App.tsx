@@ -11,6 +11,7 @@ import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { FEB_BOX_ADDRESS, JAN_BOX_ADDRESS } from "./utils/Utility";
 import NavBar from "./components/NavBar";
 import DevDetails from "./components/DevDetails";
+import BottomNavBar from "./components/BottomNavBar";
 
 const light: ThemeOptions = {
   palette: {
@@ -97,6 +98,7 @@ function App() {
                   >
                     <BoxDetail />
                   </Grid>
+                  <BottomNavBar theme={appliedTheme} />
                   <DevDetails />
                 </Grid>
               </Route>
@@ -134,6 +136,7 @@ function App() {
                     {/* <ComingSoonCard name={"March 2021 Box"} /> */}
                   </Grid>
                 </Grid>
+                <BottomNavBar theme={appliedTheme} />
                 <DevDetails />
               </Route>
             </Switch>
