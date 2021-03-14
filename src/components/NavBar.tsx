@@ -44,7 +44,7 @@ function NavBar(props: {
                       <MenuIcon />
                       TODO: Make menu items
                     </IconButton> */}
-        <Typography variant="h6" className={classes.appBarTitle}>
+        <Typography variant="h6" className={`${classes.appBarTitle} ${classes.link}`} color="inherit" component={Link} to={"/"}>
           LISTINGS
         </Typography>
         <Button
@@ -75,7 +75,7 @@ function NavBar(props: {
         >
           THE TEAM
         </Button>
-        <Button color="inherit" className={classes.appButton} component={Link} to={"/"}>
+        <Button color="inherit" className={`${classes.appButton} ${classes.link}`} component={Link} to={"/"}>
             LISTINGS
         </Button>
         <IconButton
