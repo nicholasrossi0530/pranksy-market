@@ -2,7 +2,11 @@ import React from "react";
 import {
   AppBar,
   Button,
+  Collapse,
+  Drawer,
   IconButton,
+  List,
+  ListItem,
   Menu,
   MenuItem,
   Toolbar,
@@ -13,6 +17,17 @@ import Brightness3Icon from "@material-ui/icons/Brightness3";
 import WbSunnyIcon from "@material-ui/icons/WbSunny";
 import { ILooseObject } from "../interfaces/Interfaces";
 import { Link } from "react-router-dom";
+import MenuIcon from "@material-ui/icons/Menu";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import GroupIcon from '@material-ui/icons/Group';
+import BuildIcon from '@material-ui/icons/Build';
+import HomeIcon from '@material-ui/icons/Home';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -31,6 +46,12 @@ const useStyles = makeStyles((theme) => ({
   appButton: {
     [theme.breakpoints.down("sm")]: { display: "none" },
   },
+  hamMenu: {
+    [theme.breakpoints.up("md")]: { display: "none" },
+  },
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
 }));
 
 function NavBar(props: {
@@ -40,28 +61,107 @@ function NavBar(props: {
   const icon = props.theme ? <WbSunnyIcon /> : <Brightness3Icon />;
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [open, setOpen] = React.useState(false);
+  const [openListings, setOpenListings] = React.useState(false);
+  const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [openNested, setOpenNested] = React.useState(false);
 
   const handleClick = (event: ILooseObject) => {
     setAnchorEl(event.currentTarget);
-    setOpen(true);
+    setOpenListings(true);
+  };
+
+  const handleNestedClick = (event: ILooseObject) => {
+    setOpenNested(!openNested);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
-    setOpen(false);
+    setOpenListings(false);
+    setOpenDrawer(false);
   };
 
-  return (
-    <AppBar position="static">
-      <Toolbar>
-        {/* <IconButton edge="start" color="inherit" aria-label="menu">
-                      <MenuIcon />
-                      TODO: Make menu items
-                    </IconButton> */}
-        <Typography variant="h6" className={`${classes.appBarTitle} ${classes.link}`} color="inherit" component={Link} to={"/"}>
-          LISTINGS
-        </Typography>
+  const toggleDrawer = (open: boolean) => (event: ILooseObject) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setOpenDrawer(open);
+  };
+
+  const DrawerItems = () => (
+    <div
+      role="presentation"
+    >
+      <List>
+        <ListItem button onClick={handleClose}>
+          <ListItemIcon>
+            <HomeIcon />
+          </ListItemIcon>
+          <ListItemText primary={"HOMEPAGE"} />
+        </ListItem>
+        <ListItem button onClick={handleClose}>
+          <ListItemIcon>
+            <FavoriteIcon />
+          </ListItemIcon>
+          <ListItemText primary={"WIN WIN WIN"} />
+        </ListItem>
+        <ListItem button onClick={handleClose}>
+          <ListItemIcon>
+            <BuildIcon />
+          </ListItemIcon>
+          <ListItemText primary={"ON CHAIN MAGIC"} />
+        </ListItem>
+        <ListItem button onClick={handleClose}>
+          <ListItemIcon>
+            <GroupIcon />
+          </ListItemIcon>
+          <ListItemText primary={"THE TEAM"} />
+        </ListItem>
+        <ListItem button onClick={handleNestedClick}>
+          <ListItemIcon>
+            <FormatListBulletedIcon />
+          </ListItemIcon>
+          <ListItemText primary="LISTINGS" />
+          {openNested ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={openNested} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItem
+              button
+              className={classes.nested}
+              onClick={handleClose}
+              component={Link}
+              to={"/nftbox/genesis"}
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Jan 2021 - Genesis Box" />
+            </ListItem>
+            <ListItem
+              button
+              className={classes.nested}
+              onClick={handleClose}
+              component={Link}
+              to={"/nftbox/grow"}
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Feb 2021 - Grow Box" />
+            </ListItem>
+          </List>
+        </Collapse>
+      </List>
+    </div>
+  );
+
+  const AppBarButtons = () => {
+    return (
+      <>
         <Button
           color="inherit"
           href="https://nftboxes.io/"
@@ -90,27 +190,75 @@ function NavBar(props: {
         >
           THE TEAM
         </Button>
-        <Button ref={anchorEl} color="inherit" className={`${classes.appButton} ${classes.link}`} onClick={handleClick}>
-            LISTINGS
+        <Button
+          ref={anchorEl}
+          color="inherit"
+          className={`${classes.appButton} ${classes.link}`}
+          onClick={handleClick}
+        >
+          LISTINGS
         </Button>
         <Menu
           id="simple-menu"
           anchorEl={anchorEl}
           keepMounted
-          open={open}
+          open={openListings}
           onClose={handleClose}
           anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
+            vertical: "bottom",
+            horizontal: "left",
           }}
           transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
+            vertical: "top",
+            horizontal: "left",
           }}
         >
-          <MenuItem onClick={handleClose} component={Link} className={classes.link} to={"/nftbox/genesis"}>Jan 2021 - Genesis Box</MenuItem>
-          <MenuItem onClick={handleClose} component={Link} className={classes.link} to={"/nftbox/grow"}>Feb 2021 - Grow Box</MenuItem>
+          <MenuItem
+            onClick={handleClose}
+            component={Link}
+            to={"/nftbox/genesis"}
+            className={classes.link}
+          >
+            Jan 2021 - Genesis Box
+          </MenuItem>
+          <MenuItem
+            onClick={handleClose}
+            component={Link}
+            to={"/nftbox/grow"}
+            className={classes.link}
+          >
+            Feb 2021 - Grow Box
+          </MenuItem>
         </Menu>
+      </>
+    );
+  }
+
+  return (
+    <AppBar position="static">
+      <Toolbar>
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          className={classes.hamMenu}
+          onClick={toggleDrawer(true)}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Drawer anchor={"left"} open={openDrawer} onClose={toggleDrawer(false)}>
+          <DrawerItems />
+        </Drawer>
+        <Typography
+          variant="h6"
+          className={`${classes.appBarTitle} ${classes.link}`}
+          color="inherit"
+          component={Link}
+          to={"/"}
+        >
+          LISTINGS
+        </Typography>
+    <AppBarButtons />
         <IconButton
           edge="end"
           color="inherit"
