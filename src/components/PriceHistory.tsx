@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../App.css";
 import { Modal } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
   Area,
   AreaChart,
@@ -86,6 +86,7 @@ function PriceHistory(props: {
     variables: props.queryVariables,
   });
   const [saleData, setSaleData] = useState<ILooseObject[]>([]);
+  const theme = useTheme();
 
   useEffect(() => {
     if (data !== undefined && data !== null) {
@@ -120,12 +121,12 @@ function PriceHistory(props: {
             >
               <defs>
                 <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                  <stop offset="5%" stopColor={theme.palette.primary.main} stopOpacity={0.8} />
+                  <stop offset="95%" stopColor={theme.palette.primary.main} stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+                  <stop offset="5%" stopColor={theme.palette.primary.main} stopOpacity={0.8} />
+                  <stop offset="95%" stopColor={theme.palette.primary.main} stopOpacity={0} />
                 </linearGradient>
               </defs>
               <XAxis dataKey="timestamp" />
@@ -135,7 +136,7 @@ function PriceHistory(props: {
               <Area
                 type="monotone"
                 dataKey="value"
-                stroke="#8884d8"
+                stroke={theme.palette.primary.main}
                 fillOpacity={1}
                 fill="url(#colorUv)"
               />
