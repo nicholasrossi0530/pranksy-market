@@ -7,6 +7,7 @@ import {
   CardContent,
   CardMedia,
   CircularProgress,
+  Link,
   List,
   ListItem,
   ListItemText,
@@ -27,6 +28,9 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     justifyContent: "space-between",
   },
+  link: {
+    textDecoration: "none",
+  },
   image: {
     height: "450px",
   },
@@ -38,8 +42,8 @@ const useStyles = makeStyles(() => ({
     "-webkit-box-orient": "vertical",
   },
   spinner: {
-    color: "#ffdc11"
-  }
+    color: "#ffdc11",
+  },
 }));
 
 function ArtCard(props: { item: IAsset; address: string }) {
@@ -61,37 +65,46 @@ function ArtCard(props: { item: IAsset; address: string }) {
   const artistNote = descriptions[5];
   return (
     <Card className={classes.artCard} key={props.item.id}>
-      {props.item &&
-      props.item.animation_url &&
-      props.item.animation_url.includes(".mp4") ? (
-        <video
-          autoPlay
-          muted
-          loop
-          src={props.item.animation_url!}
-          height={450}
-          preload="auto"
-          controlsList="nodownload"
-        />
-      ) : (
-        <CardMedia
-          component={props.item && props.item.image_url && props.item.image_url.includes(".mp4") ? "video" : "img"}
-          alt="NFTBox"
-          height="450px"
-          title="NFTBox"
-          autoPlay={true}
-          muted={true}
-          loop={true}
-          preload={"auto"}
-          controlsList={"nodownload"}
-          src={
-            props.item ? props.item.animation_url ?? props.item.image_url : ""
-          }
-        />
-      )}
+      <Link href={props.item ? props.item.permalink : ""} className={classes.link}>
+        {props.item &&
+        props.item.animation_url &&
+        props.item.animation_url.includes(".mp4") ? (
+          <video
+            autoPlay
+            muted
+            loop
+            src={props.item.animation_url!}
+            height={450}
+            preload="auto"
+            controlsList="nodownload"
+          />
+        ) : (
+          <CardMedia
+            component={
+              props.item &&
+              props.item.image_url &&
+              props.item.image_url.includes(".mp4")
+                ? "video"
+                : "img"
+            }
+            alt="NFTBox"
+            height="450px"
+            title="NFTBox"
+            autoPlay={true}
+            muted={true}
+            loop={true}
+            preload={"auto"}
+            controlsList={"nodownload"}
+            src={
+              props.item ? props.item.animation_url ?? props.item.image_url : ""
+            }
+          />
+        )}
+      </Link>
+
       <CardContent>
         <Typography gutterBottom variant="h5" component="h2">
-          {props.item ? props.item.name : ""}
+          {props.item ? props.item.name.replace(/([#])\d+/g, "") : ""}
         </Typography>
         <List>
           <ListItem>
@@ -131,7 +144,11 @@ function ArtCard(props: { item: IAsset; address: string }) {
           Check Out
         </Button>
         <Button onClick={handleOpen} size="small">
-          {priceHistoryLoading ? <CircularProgress className={classes.spinner} size={20} /> : "Price History"}
+          {priceHistoryLoading ? (
+            <CircularProgress className={classes.spinner} size={20} />
+          ) : (
+            "Price History"
+          )}
         </Button>
         {open && (
           <PriceHistory
