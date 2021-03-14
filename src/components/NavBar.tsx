@@ -11,6 +11,7 @@ import {
   MenuItem,
   Toolbar,
   Typography,
+  Link as ExternalLink,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Brightness3Icon from "@material-ui/icons/Brightness3";
@@ -96,25 +97,25 @@ function NavBar(props: {
       role="presentation"
     >
       <List>
-        <ListItem button onClick={handleClose}>
+        <ListItem className={classes.link} button href="https://nftboxes.io/" color="textSecondary" component={ExternalLink}>
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
           <ListItemText primary={"HOMEPAGE"} />
         </ListItem>
-        <ListItem button onClick={handleClose}>
+        <ListItem button href="https://nftboxes.io/win-win-win/" className={classes.link} color="textSecondary" component={ExternalLink}>
           <ListItemIcon>
             <FavoriteIcon />
           </ListItemIcon>
           <ListItemText primary={"WIN WIN WIN"} />
         </ListItem>
-        <ListItem button onClick={handleClose}>
+        <ListItem button href="https://nftboxes.io/on-chain-magic/" className={classes.link} color="textSecondary" component={ExternalLink}>
           <ListItemIcon>
             <BuildIcon />
           </ListItemIcon>
           <ListItemText primary={"ON CHAIN MAGIC"} />
         </ListItem>
-        <ListItem button onClick={handleClose}>
+        <ListItem button href="https://nftboxes.io/team/" className={classes.link} color="textSecondary" component={ExternalLink}>
           <ListItemIcon>
             <GroupIcon />
           </ListItemIcon>
