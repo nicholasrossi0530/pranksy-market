@@ -1,36 +1,13 @@
-import { Card, CardActions, CardContent } from "@material-ui/core";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Shimmer } from "react-shimmer";
 import { IAsset, IParamType } from "../interfaces/Interfaces";
 import { ART_ADDRESS, getTokenIds } from "../utils/Utility";
 import ArtCard from "./ArtCard";
-import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles(() => ({
-  marketCard: {
-    maxWidth: "450px",
-    margin: "1em 0.5em",
-    maxHeight: "950px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  link: {
-    textDecoration: "none",
-  },
-  spinner: {
-    color: "#ffdc11",
-  },
-  shimmerText: {
-    margin: "5px 0px",
-  },
-}));
+import LoadingCard from "./LoadingCard";
 
 function BoxDetail() {
   const params = useParams<IParamType>();
-  const classes = useStyles();
   const [assetData, setAssetData] = useState<IAsset[] | []>([]);
   const [loading, setLoading] = useState(true);
 
@@ -59,26 +36,21 @@ function BoxDetail() {
     }
   });
 
-  const LoadingCard = () => {
-    return (
-      <Card className={classes.marketCard}>
-        <Shimmer width={400} height={450} />
-        <CardContent>
-          <Shimmer className={classes.shimmerText} width={325} height={32} />
-          <Shimmer className={classes.shimmerText} width={325} height={20} />
-          <Shimmer className={classes.shimmerText} width={325} height={60} />
-        </CardContent>
-        <CardActions>
-          <Shimmer width={79} height={22} />
-          <Shimmer width={79} height={22} />
-        </CardActions>
-      </Card>
-    );
-  };
-
   if (loading) {
     return (
       <>
+        <LoadingCard />
+        <LoadingCard />
+        <LoadingCard />
+        <LoadingCard />
+        <LoadingCard />
+        <LoadingCard />
+        <LoadingCard />
+        <LoadingCard />
+        <LoadingCard />
+        <LoadingCard />
+        <LoadingCard />
+        <LoadingCard />
         <LoadingCard />
         <LoadingCard />
         <LoadingCard />

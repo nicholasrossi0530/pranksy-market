@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { useState } from "react";
-import { Grid, Link } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { makeStyles, ThemeOptions } from "@material-ui/core/styles";
 import MarketCard from "./components/MarketCard";
 // import ComingSoonCard from "./components/ComingSoonCard";
@@ -9,8 +9,8 @@ import BoxDetail from "./components/BoxDetail";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { FEB_BOX_ADDRESS, JAN_BOX_ADDRESS } from "./utils/Utility";
-import LaunchIcon from "@material-ui/icons/Launch";
 import NavBar from "./components/NavBar";
+import DevDetails from "./components/DevDetails";
 
 const light: ThemeOptions = {
   palette: {
@@ -97,18 +97,7 @@ function App() {
                   >
                     <BoxDetail />
                   </Grid>
-                  <div className={classes.devSignature}>
-                    <Link
-                      target="_blank"
-                      className={classes.link}
-                      color="textSecondary"
-                      href={"https://opensea.io/accounts/nickrossi"}
-                    >
-                      Developed by: nickrossi <LaunchIcon fontSize={"small"} />
-                      <br />
-                      Eth address: 0x8530e5B5621119CB3e3Ae324e6A6e63014A6aD87
-                    </Link>
-                  </div>
+                  <DevDetails />
                 </Grid>
               </Route>
               <Route path="/">
@@ -145,18 +134,7 @@ function App() {
                     {/* <ComingSoonCard name={"March 2021 Box"} /> */}
                   </Grid>
                 </Grid>
-                <div className={classes.devSignature}>
-                  <Link
-                    target="_blank"
-                    className={classes.link}
-                    color="textSecondary"
-                    href={"https://opensea.io/accounts/nickrossi"}
-                  >
-                    Developed by: nickrossi <LaunchIcon fontSize={"small"} />
-                    <br />
-                    Eth address: 0x8530e5B5621119CB3e3Ae324e6A6e63014A6aD87
-                  </Link>
-                </div>
+                <DevDetails />
               </Route>
             </Switch>
           </div>
