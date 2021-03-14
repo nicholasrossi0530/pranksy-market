@@ -1,32 +1,32 @@
 import "./App.css";
 import React, { useState } from "react";
-import { Grid, IconButton } from "@material-ui/core";
+import { Grid, Link } from "@material-ui/core";
 import { makeStyles, ThemeOptions } from "@material-ui/core/styles";
 import MarketCard from "./components/MarketCard";
 // import ComingSoonCard from "./components/ComingSoonCard";
-import {
-  createMuiTheme,
-  CssBaseline,
-  ThemeProvider,
-  Link,
-} from "@material-ui/core";
-import Brightness7Icon from "@material-ui/icons/Brightness7";
-import Brightness3Icon from "@material-ui/icons/Brightness3";
+import { createMuiTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
 import BoxDetail from "./components/BoxDetail";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { FEB_BOX_ADDRESS, JAN_BOX_ADDRESS } from "./utils/Utility";
 import LaunchIcon from "@material-ui/icons/Launch";
+import NavBar from "./components/NavBar";
 
 const light: ThemeOptions = {
   palette: {
     type: "light",
+    primary: {
+      main: "#f2b400",
+    },
   },
 };
 
 const dark: ThemeOptions = {
   palette: {
     type: "dark",
+    primary: {
+      main: "#f2b400",
+    },
   },
 };
 
@@ -44,16 +44,25 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: "none",
     },
     textDecoration: "none",
-    color: "white",
   },
   devSignature: {
     display: "flex",
     justifyContent: "center",
     alignItems: "baseline",
     marginBottom: "50px",
+    paddingLeft: "10px"
   },
   mainGrid: {
     justifyContent: "center",
+  },
+  appBarTitle: {
+    marginRight: "2em",
+  },
+  lastNavButton: {
+    marginLeft: "auto",
+  },
+  appButton: {
+    [theme.breakpoints.down("sm")]: { display: "none" },
   },
 }));
 
@@ -64,7 +73,6 @@ const client = new ApolloClient({
 
 function App() {
   const [theme, setTheme] = useState(true);
-  const icon = theme ? <Brightness7Icon /> : <Brightness3Icon />;
   const classes = useStyles();
   const appliedTheme = createMuiTheme(theme ? dark : light);
 
@@ -78,14 +86,7 @@ function App() {
             renders the first one that matches the current URL. */}
             <Switch>
               <Route path="/nftbox/:box">
-                <IconButton
-                  edge="end"
-                  color="inherit"
-                  aria-label="mode"
-                  onClick={() => setTheme(!theme)}
-                >
-                  {icon}
-                </IconButton>
+                <NavBar setTheme={setTheme} theme={theme} />
                 <Grid className={classes.mainGrid} container spacing={1}>
                   <Grid
                     container
@@ -97,27 +98,21 @@ function App() {
                     <BoxDetail />
                   </Grid>
                   <div className={classes.devSignature}>
-                  <Link
-                    target="_blank"
-                    className={classes.link}
-                    href={"https://opensea.io/accounts/nickrossi"}
-                  >
-                    Developed by: nickrossi <LaunchIcon fontSize={"small"} />
-                    <br />
-                    Eth address: 0x8530e5B5621119CB3e3Ae324e6A6e63014A6aD87
-                  </Link>
-                </div>
+                    <Link
+                      target="_blank"
+                      className={classes.link}
+                      color="textSecondary"
+                      href={"https://opensea.io/accounts/nickrossi"}
+                    >
+                      Developed by: nickrossi <LaunchIcon fontSize={"small"} />
+                      <br />
+                      Eth address: 0x8530e5B5621119CB3e3Ae324e6A6e63014A6aD87
+                    </Link>
+                  </div>
                 </Grid>
               </Route>
               <Route path="/">
-                <IconButton
-                  edge="end"
-                  color="inherit"
-                  aria-label="mode"
-                  onClick={() => setTheme(!theme)}
-                >
-                  {icon}
-                </IconButton>
+                <NavBar setTheme={setTheme} theme={theme} />
                 <Grid className={classes.mainGrid} container spacing={1}>
                   <Grid
                     container
@@ -154,6 +149,7 @@ function App() {
                   <Link
                     target="_blank"
                     className={classes.link}
+                    color="textSecondary"
                     href={"https://opensea.io/accounts/nickrossi"}
                   >
                     Developed by: nickrossi <LaunchIcon fontSize={"small"} />
