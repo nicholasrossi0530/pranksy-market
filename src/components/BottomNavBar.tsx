@@ -44,7 +44,7 @@ function BottomNavBar(props: { theme: boolean }) {
               height="20"
               src="/DiscordIcon.svg"
               style={{
-                  backgroundColor: props.theme ? "" : "black"
+                  backgroundColor: props.theme ? "" : "rgba(0,0,0,0.5)"
               }}
             />
           </>
@@ -72,7 +72,7 @@ function BottomNavBar(props: { theme: boolean }) {
               src="/etherscan-logo-light-circle.svg"
               className={classes.navButton}
               style={{
-                backgroundColor: props.theme ? "" : "black"
+                backgroundColor: props.theme ? "" : "rgba(0,0,0,0.5)"
             }}
             />
           </>
