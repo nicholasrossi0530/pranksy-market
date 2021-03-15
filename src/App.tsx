@@ -99,8 +99,8 @@ function App() {
                     <BoxDetail />
                   </Grid>
                 </Grid>
-                <BottomNavBar theme={theme} />
                 <DevDetails />
+                <BottomNavBar theme={theme} />
               </Route>
               <Route path="/">
                 <NavBar setTheme={setTheme} theme={theme} />
@@ -136,8 +136,8 @@ function App() {
                     {/* <ComingSoonCard name={"March 2021 Box"} /> */}
                   </Grid>
                 </Grid>
-                <BottomNavBar theme={theme} />
                 <DevDetails />
+                <BottomNavBar theme={theme} />
               </Route>
             </Switch>
           </div>

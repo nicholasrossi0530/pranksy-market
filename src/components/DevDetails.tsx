@@ -8,7 +8,7 @@ const useStyles = makeStyles(() => ({
         display: "flex",
         justifyContent: "center",
         alignItems: "baseline",
-        marginBottom: "50px",
+        marginTop: "1.25em",
         paddingLeft: "10px"
       },
       link: {

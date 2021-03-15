@@ -9,10 +9,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     justifyContent: "center",
-    marginTop: "50px",
+    marginTop: "1.25em",
     flexWrap: "wrap",
     padding: "0px auto",
-    marginBottom: "50px",
+    backgroundColor: theme.palette.primary.main
   },
   navButton: {
       width: "20px"     
