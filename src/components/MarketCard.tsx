@@ -9,7 +9,7 @@ import {
   CircularProgress,
   Typography,
 } from "@material-ui/core";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import PriceHistory from "./PriceHistory";
 import { IAsset } from "../interfaces/Interfaces";
@@ -59,7 +59,6 @@ function MarketCard(props: {
   const [open, setOpen] = React.useState(false);
   const [priceHistoryLoading, setPriceHistoryLoading] = React.useState(false);
   const [loading, setLoading] = useState(true);
-  const theme = useTheme();
   const windowSize = useWindowSize();
 
   useEffect(() => {
