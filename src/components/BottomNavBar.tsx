@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main
   },
   navButton: {
-      width: "20px"     
+      width: "20px"
   }
 }));
 

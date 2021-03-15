@@ -20,12 +20,12 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   areaChart: {
     margin: "auto",
     display: "flex",
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
 }));
 
@@ -110,27 +110,44 @@ function PriceHistory(props: {
           aria-describedby="simple-modal-description"
           className={classes.modalBox}
         >
-          <ResponsiveContainer
-            width={"95%"}
-            height={"90%"}
-          >
+          <ResponsiveContainer width={"95%"} height={"90%"}>
             <AreaChart
               data={saleData}
               margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
               className={classes.areaChart}
+              style={{
+                backgroundColor: theme.palette.background.paper,
+                fill: theme.palette.text.secondary,
+              }}
             >
               <defs>
                 <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={theme.palette.primary.main} stopOpacity={0.8} />
-                  <stop offset="95%" stopColor={theme.palette.primary.main} stopOpacity={0} />
+                  <stop
+                    offset="5%"
+                    stopColor={theme.palette.primary.main}
+                    stopOpacity={0.8}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor={theme.palette.primary.main}
+                    stopOpacity={0}
+                  />
                 </linearGradient>
                 <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={theme.palette.primary.main} stopOpacity={0.8} />
-                  <stop offset="95%" stopColor={theme.palette.primary.main} stopOpacity={0} />
+                  <stop
+                    offset="5%"
+                    stopColor={theme.palette.primary.main}
+                    stopOpacity={0.8}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor={theme.palette.primary.main}
+                    stopOpacity={0}
+                  />
                 </linearGradient>
               </defs>
-              <XAxis dataKey="timestamp" />
-              <YAxis dataKey="value" />
+              <XAxis dataKey="timestamp" tick={{ fill: theme.palette.text.primary }}/>
+              <YAxis dataKey="value"  tick={{ fill: theme.palette.text.primary }}/>
               <CartesianGrid strokeDasharray="3 3" />
               <Tooltip />
               <Area
