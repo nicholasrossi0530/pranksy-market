@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, Theme } from "@material-ui/core/styles";
+import { makeStyles, Theme, useTheme } from "@material-ui/core/styles";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import TwitterIcon from "@material-ui/icons/Twitter";
@@ -19,8 +19,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function BottomNavBar(props: { theme: Theme }) {
+function BottomNavBar(props: { theme: boolean }) {
   const classes = useStyles(props.theme);
+  const theme = useTheme();
 
   return (
     <BottomNavigation className={classes.root}>
@@ -43,6 +44,9 @@ function BottomNavBar(props: { theme: Theme }) {
               width="20"
               height="20"
               src="/DiscordIcon.svg"
+              style={{
+                  backgroundColor: props.theme ? "" : "black"
+              }}
             />
           </>
         }
@@ -68,6 +72,9 @@ function BottomNavBar(props: { theme: Theme }) {
               height="20"
               src="/etherscan-logo-light-circle.svg"
               className={classes.navButton}
+              style={{
+                backgroundColor: props.theme ? "" : "black"
+            }}
             />
           </>
         }
