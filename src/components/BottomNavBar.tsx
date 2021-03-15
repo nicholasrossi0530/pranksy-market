@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, Theme, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import TwitterIcon from "@material-ui/icons/Twitter";
@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
 
 function BottomNavBar(props: { theme: boolean }) {
   const classes = useStyles(props.theme);
-  const theme = useTheme();
 
   return (
     <BottomNavigation className={classes.root}>
