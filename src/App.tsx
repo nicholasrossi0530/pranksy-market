@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "baseline",
     marginBottom: "50px",
-    paddingLeft: "10px"
+    paddingLeft: "10px",
   },
   mainGrid: {
     justifyContent: "center",
@@ -98,9 +98,9 @@ function App() {
                   >
                     <BoxDetail />
                   </Grid>
-                  <BottomNavBar theme={appliedTheme} />
-                  <DevDetails />
                 </Grid>
+                <BottomNavBar theme={appliedTheme} />
+                <DevDetails />
               </Route>
               <Route path="/">
                 <NavBar setTheme={setTheme} theme={theme} />
