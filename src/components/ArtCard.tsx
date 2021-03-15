@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
     maxHeight: "950px",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
   },
   link: {
     textDecoration: "none",
@@ -44,6 +44,9 @@ const useStyles = makeStyles(() => ({
   spinner: {
     color: "#ffdc11",
   },
+  buttonContainer: {
+    marginTop: "auto"
+  }
 }));
 
 function ArtCard(props: { item: IAsset; address: string }) {
@@ -135,7 +138,7 @@ function ArtCard(props: { item: IAsset; address: string }) {
             : ""}
         </Typography> */}
       </CardContent>
-      <CardActions>
+      <CardActions className={classes.buttonContainer}>
         <Button
           href={props.item ? props.item.permalink : ""}
           target="_blank"

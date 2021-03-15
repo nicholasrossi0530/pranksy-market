@@ -59,7 +59,7 @@ function BoxDetail() {
     return (
       <>
         {assetData.map((item: IAsset) => {
-          return <ArtCard address={ART_ADDRESS} item={item} />;
+          return <ArtCard key={item.id} address={ART_ADDRESS} item={item} />;
         })}
       </>
     );
