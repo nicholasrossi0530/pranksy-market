@@ -33,6 +33,9 @@ const useStyles = makeStyles(() => ({
   },
   link: {
     textDecoration: "none",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   },
   spinner: {
     color: "#ffdc11",

@@ -30,6 +30,9 @@ const useStyles = makeStyles(() => ({
   },
   link: {
     textDecoration: "none",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   },
   image: {
     height: "450px",
