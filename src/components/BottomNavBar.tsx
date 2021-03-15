@@ -11,9 +11,12 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     marginTop: "50px",
     flexWrap: "wrap",
-    padding: "0px 150px",
+    padding: "0px auto",
     marginBottom: "50px",
   },
+  navButton: {
+      width: "20px"     
+  }
 }));
 
 function BottomNavBar(props: { theme: Theme }) {
@@ -56,6 +59,7 @@ function BottomNavBar(props: { theme: Theme }) {
         href="https://etherscan.io/address/0xf876bbc810e84854c9c37018103c0045544a6af9"
         label="Etherscan"
         value="folder"
+        className={classes.navButton}
         icon={
           <>
             <img
@@ -63,6 +67,7 @@ function BottomNavBar(props: { theme: Theme }) {
               width="20"
               height="20"
               src="/etherscan-logo-light-circle.svg"
+              className={classes.navButton}
             />
           </>
         }
