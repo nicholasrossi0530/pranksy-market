@@ -9,7 +9,7 @@ import {
   CircularProgress,
   Typography,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import axios from "axios";
 import PriceHistory from "./PriceHistory";
 import { IAsset } from "../interfaces/Interfaces";
@@ -17,10 +17,11 @@ import {
   coinSymbolConverter,
   removeEdition,
   getSearchTraits,
+  useWindowSize,
 } from "../utils/Utility";
 import { OS_VARS } from "../utils/Schema";
 import { Link } from "react-router-dom";
-import { Shimmer } from 'react-shimmer';
+import { Shimmer } from "react-shimmer";
 
 const useStyles = makeStyles(() => ({
   marketCard: {
@@ -35,14 +36,14 @@ const useStyles = makeStyles(() => ({
     textDecoration: "none",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   spinner: {
     color: "#ffdc11",
   },
   shimmerText: {
-    margin: "5px 0px"
-  }
+    margin: "5px 0px",
+  },
 }));
 
 function MarketCard(props: {
@@ -58,6 +59,8 @@ function MarketCard(props: {
   const [open, setOpen] = React.useState(false);
   const [priceHistoryLoading, setPriceHistoryLoading] = React.useState(false);
   const [loading, setLoading] = useState(true);
+  const theme = useTheme();
+  const windowSize = useWindowSize();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -99,9 +102,9 @@ function MarketCard(props: {
           <Shimmer width={450} height={450} />
         </Link>
         <CardContent>
-        <Shimmer className={classes.shimmerText} width={418} height={32} />
-        <Shimmer className={classes.shimmerText} width={418} height={20} />
-        <Shimmer className={classes.shimmerText} width={418} height={60} />
+          <Shimmer className={classes.shimmerText} width={418} height={32} />
+          <Shimmer className={classes.shimmerText} width={418} height={20} />
+          <Shimmer className={classes.shimmerText} width={418} height={60} />
         </CardContent>
         <CardActions>
           <Button
@@ -126,42 +129,31 @@ function MarketCard(props: {
     return (
       <Card className={classes.marketCard}>
         <Link to={`/nftbox/${props.box}`} className={classes.link}>
-          {assetData.length > 0 &&
-          assetData[0].animation_url &&
-          assetData[0].animation_url.includes(".mp4") ? (
-            <video
-              autoPlay
-              muted
-              loop
-              src={assetData[0].animation_url!}
-              height={450}
-              preload="auto"
-              controlsList="nodownload"
-            />
-          ) : (
-            <CardMedia
-              component={
-                assetData.length > 0 &&
-                assetData[0].image_url &&
-                assetData[0].image_url.includes(".mp4")
-                  ? "video"
-                  : "img"
-              }
-              alt="NFTBox"
-              height="450px"
-              title="NFTBox"
-              autoPlay={true}
-              muted={true}
-              loop={true}
-              preload={"auto"}
-              controlsList={"nodownload"}
-              src={
-                assetData.length > 0
-                  ? assetData[0].animation_url ?? assetData[0].image_url
-                  : ""
-              }
-            />
-          )}
+          <CardMedia
+            component={
+              assetData.length > 0 &&
+              assetData[0].image_url &&
+              assetData[0].image_url.includes(".mp4") &&
+              windowSize.width > 600
+                ? "video"
+                : "img"
+            }
+            alt="NFTBox"
+            height="450px"
+            title="NFTBox"
+            autoPlay={windowSize.width <= 600 ? false : true}
+            muted={true}
+            loop={true}
+            preload={"auto"}
+            controlsList={"nodownload"}
+            src={
+              assetData.length > 0 &&
+              windowSize.width > 600 &&
+              assetData[0].animation_url
+                ? assetData[0].animation_url
+                : assetData[0].image_url
+            }
+          />
         </Link>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">

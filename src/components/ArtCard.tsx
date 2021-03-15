@@ -16,7 +16,11 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { IAsset } from "../interfaces/Interfaces";
 import PriceHistory from "./PriceHistory";
-import { removeEdition, getSearchTraits } from "../utils/Utility";
+import {
+  removeEdition,
+  getSearchTraits,
+  useWindowSize,
+} from "../utils/Utility";
 import { OS_VARS } from "../utils/Schema";
 
 const useStyles = makeStyles(() => ({
@@ -32,7 +36,7 @@ const useStyles = makeStyles(() => ({
     textDecoration: "none",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   image: {
     height: "450px",
@@ -48,14 +52,15 @@ const useStyles = makeStyles(() => ({
     color: "#ffdc11",
   },
   buttonContainer: {
-    marginTop: "auto"
-  }
+    marginTop: "auto",
+  },
 }));
 
 function ArtCard(props: { item: IAsset; address: string }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [priceHistoryLoading, setPriceHistoryLoading] = React.useState(false);
+  const windowSize = useWindowSize();
 
   const handleOpen = () => {
     setOpen(true);
@@ -71,41 +76,33 @@ function ArtCard(props: { item: IAsset; address: string }) {
   const artistNote = descriptions[5];
   return (
     <Card className={classes.artCard} key={props.item.id}>
-      <Link href={props.item ? props.item.permalink : ""} className={classes.link}>
-        {props.item &&
-        props.item.animation_url &&
-        props.item.animation_url.includes(".mp4") ? (
-          <video
-            autoPlay
-            muted
-            loop
-            src={props.item.animation_url!}
-            height={450}
-            preload="auto"
-            controlsList="nodownload"
-          />
-        ) : (
-          <CardMedia
-            component={
-              props.item &&
-              props.item.image_url &&
-              props.item.image_url.includes(".mp4")
-                ? "video"
-                : "img"
-            }
-            alt="NFTBox"
-            height="450px"
-            title="NFTBox"
-            autoPlay={true}
-            muted={true}
-            loop={true}
-            preload={"auto"}
-            controlsList={"nodownload"}
-            src={
-              props.item ? props.item.animation_url ?? props.item.image_url : ""
-            }
-          />
-        )}
+      <Link
+        href={props.item ? props.item.permalink : ""}
+        className={classes.link}
+      >
+        <CardMedia
+          component={
+            props.item &&
+            props.item.image_url &&
+            props.item.image_url.includes(".mp4") &&
+            windowSize.width > 600
+              ? "video"
+              : "img"
+          }
+          alt="NFTBox"
+          height="450px"
+          title="NFTBox"
+          autoPlay={windowSize.width <= 600 ? false : true}
+          muted={true}
+          loop={true}
+          preload={"auto"}
+          controlsList={"nodownload"}
+          src={
+            props.item && windowSize.width > 600 && props.item.animation_url
+              ? props.item.animation_url
+              : props.item.image_url
+          }
+        />
       </Link>
 
       <CardContent>

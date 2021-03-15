@@ -64,7 +64,7 @@ const formatSaleData = (edges: ILooseObject[]) => {
     });
 
     const averageValue = totalValue / totalCount;
-    average["Average Value"] = `${averageValue}`;
+    average["Average Sale ( Ξ )"] = `${averageValue}`;
     average.timestamp = key;
     average.volume = totalCount;
     dailyResult.push(average);
@@ -147,12 +147,12 @@ function PriceHistory(props: {
                 </linearGradient>
               </defs>
               <XAxis dataKey="timestamp" tick={{ fill: theme.palette.text.primary }}/>
-              <YAxis dataKey="Average Value"  tick={{ fill: theme.palette.text.primary }}/>
+              <YAxis dataKey="Average Sale ( Ξ )"  tick={{ fill: theme.palette.text.primary }}/>
               <CartesianGrid strokeDasharray="3 3" />
               <Tooltip contentStyle={{ color: theme.palette.text.primary, backgroundColor: theme.palette.background.paper }} />
               <Area
                 type="monotone"
-                dataKey="Average Value"
+                dataKey="Average Sale ( Ξ )"
                 stroke={theme.palette.primary.main}
                 fillOpacity={1}
                 fill="url(#colorUv)"
