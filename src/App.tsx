@@ -118,6 +118,7 @@ function App() {
                       orderBy={"sale_date"}
                       collection="nftbox"
                       name="Genesis Box"
+                      enablePriceHistory={true}
                     />
                     <MarketCard
                       address={FEB_BOX_ADDRESS}
@@ -125,6 +126,7 @@ function App() {
                       orderBy={"sale_date"}
                       collection="nftbox"
                       name="Grow Box"
+                      enablePriceHistory={true}
                     />
                     <MarketCard
                       address={"0x5237E33D805339925aA5ab220F13B386357aa349"}
@@ -132,6 +134,7 @@ function App() {
                       tokenId={3}
                       collection="nftboxes"
                       name="March Ticket"
+                      enablePriceHistory={false}
                     />
                     {/* <ComingSoonCard name={"March 2021 Box"} /> */}
                   </Grid>

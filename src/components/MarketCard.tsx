@@ -53,6 +53,7 @@ function MarketCard(props: {
   tokenId?: number;
   collection: string;
   name: string;
+  enablePriceHistory: boolean;
 }) {
   const [assetData, setAssetData] = useState<IAsset[] | []>([]);
   const classes = useStyles();
@@ -191,26 +192,32 @@ function MarketCard(props: {
               <Button size="small">Contents</Button>
             </Link>
           )}
-          <Button onClick={handleOpen} size="small">
-            {priceHistoryLoading ? (
-              <CircularProgress className={classes.spinner} size={20} />
-            ) : (
-              "Price History"
-            )}
-          </Button>
-          {open && (
-            <PriceHistory
-              handleClose={handleClose}
-              setPriceHistoryLoading={setPriceHistoryLoading}
-              open={open}
-              queryVariables={OS_VARS(
-                removeEdition(assetData.length > 0 ? assetData[0].name : ""),
-                getSearchTraits(
-                  assetData.length > 0 ? assetData[0].traits : []
-                ),
-                props.collection
+          {props.enablePriceHistory && (
+            <>
+              <Button onClick={handleOpen} size="small">
+                {priceHistoryLoading ? (
+                  <CircularProgress className={classes.spinner} size={20} />
+                ) : (
+                  "Price History"
+                )}
+              </Button>
+              {open && (
+                <PriceHistory
+                  handleClose={handleClose}
+                  setPriceHistoryLoading={setPriceHistoryLoading}
+                  open={open}
+                  queryVariables={OS_VARS(
+                    removeEdition(
+                      assetData.length > 0 ? assetData[0].name : ""
+                    ),
+                    getSearchTraits(
+                      assetData.length > 0 ? assetData[0].traits : []
+                    ),
+                    props.collection
+                  )}
+                />
               )}
-            />
+            </>
           )}
         </CardActions>
       </Card>
