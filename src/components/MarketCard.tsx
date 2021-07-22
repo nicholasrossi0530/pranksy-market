@@ -49,11 +49,12 @@ const useStyles = makeStyles(() => ({
 function MarketCard(props: {
   address: string;
   box?: string;
-  orderBy: string;
+  orderBy?: string;
   tokenId?: number;
   collection: string;
   name: string;
   enablePriceHistory: boolean;
+  comingSoon?:boolean;
 }) {
   const [assetData, setAssetData] = useState<IAsset[] | []>([]);
   const classes = useStyles();
@@ -71,7 +72,7 @@ function MarketCard(props: {
         {
           params: {
             asset_contract_address: props.address,
-            order_by: props.orderBy,
+            order_by: props.orderBy ? props.orderBy : '',
             limit: 1,
           },
         }
@@ -187,7 +188,7 @@ function MarketCard(props: {
           >
             Check Out
           </Button>
-          {props.box && (
+          {props.box && !props.comingSoon && (
             <Link to={`/nftbox/${props.box}`} className={classes.link}>
               <Button size="small">Contents</Button>
             </Link>

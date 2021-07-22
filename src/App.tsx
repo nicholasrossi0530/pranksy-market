@@ -8,7 +8,7 @@ import { createMuiTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
 import BoxDetail from "./components/BoxDetail";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
-import { FEB_BOX_ADDRESS, JAN_BOX_ADDRESS } from "./utils/Utility";
+import { FEB_BOX_ADDRESS, JAN_BOX_ADDRESS, MAR_BOX_ADDRESS, APRIL_BOX_ADDRESS, MAY_BOX_ADDRESS, JUNE_BOX_ADDRESS } from "./utils/Utility";
 import NavBar from "./components/NavBar";
 import DevDetails from "./components/DevDetails";
 import BottomNavBar from "./components/BottomNavBar";
@@ -47,6 +47,8 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
   },
   devSignature: {
+    fontSize: "0.85rem",
+    textAlign: "center",
     display: "flex",
     justifyContent: "center",
     alignItems: "baseline",
@@ -128,13 +130,47 @@ function App() {
                       name="Grow Box"
                       enablePriceHistory={true}
                     />
-                    <MarketCard
+                    {/* <MarketCard
                       address={"0x5237E33D805339925aA5ab220F13B386357aa349"}
                       orderBy={"tokenId"}
                       tokenId={3}
                       collection="nftboxes"
                       name="March Ticket"
                       enablePriceHistory={false}
+                    /> */}
+                    <MarketCard
+                      address={MAR_BOX_ADDRESS}
+                      box={"100-years-from-now"}
+                      collection="nftbox"
+                      name="100 Years From Now Box"
+                      enablePriceHistory={true}
+                      tokenId={1}
+                    />
+                    {/* TODO: Pass in all tokenIds of boxes, collect sales data from each node and get floor price */}
+                    <MarketCard
+                      address={APRIL_BOX_ADDRESS}
+                      box={"schemes"}
+                      collection="nftbox"
+                      name="Schemes Box"
+                      enablePriceHistory={true}
+                      tokenId={801}
+                    />
+                    <MarketCard
+                      address={MAY_BOX_ADDRESS}
+                      box={"reflective"}
+                      collection="nftbox"
+                      name="Reflective Box"
+                      enablePriceHistory={true}
+                      tokenId={1}
+                    />
+                    <MarketCard
+                      address={JUNE_BOX_ADDRESS}
+                      box={"hollywood-pixelations"}
+                      collection="nftbox"
+                      name="Hollywood Pixelations Box"
+                      enablePriceHistory={true}
+                      tokenId={154}
+                      comingSoon={true}
                     />
                     {/* <ComingSoonCard name={"March 2021 Box"} /> */}
                   </Grid>
